@@ -7,6 +7,7 @@ export default function Booking({ slot }) {
 
 	function handleConfirm() {
 		setConfirmSlot(true);
+		Tally.loadEmbeds();
 	}
 
 	return (
