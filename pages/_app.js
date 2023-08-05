@@ -22,7 +22,14 @@ export default function App({ Component, pageProps }) {
 							onChange={e => setPassword(e.target.value)}
 							className="p-2 text-2xl border-2 border-gray-300 rounded-md outline-none focus:border-gray-500"
 						/> */}
-						<Input type="password" value={password} onChange={e => setPassword(e.target.value.toLowerCase())} className="max-w-sm py-5" autoFocus />
+						<Input
+							type="password"
+							placeholder="Enter Passcode"
+							value={password}
+							onChange={e => setPassword(e.target.value.toLowerCase())}
+							className="max-w-sm py-5 m-2"
+							autoFocus
+						/>
 					</div>
 				)}
 			</MoviesProvider>

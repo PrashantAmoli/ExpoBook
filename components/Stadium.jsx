@@ -5,6 +5,8 @@ import useMovies from '@/context/context';
 import Modal from './Modal';
 import { ToastAction } from './ui/toast';
 import { useToast } from './ui/use-toast';
+import { ScrollArea } from './ui/scroll-area';
+import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
 
 // const data = [
 // 	{
@@ -169,7 +171,8 @@ export function SVG() {
 			</div> */}
 
 			<MyDrawer drawer={drawerOpen} setDrawerOpen={setDrawerOpen} slot={slot}></MyDrawer>
-			<section className="w-[88rem] max-h-screen overflow-y-hidden">
+			<section className="object-cover w-full max-h-screen overflow-auto ">
+				{/* <ScrollArea className="h-[88vh] w-full rounded-md border p-1"> */}
 				<svg
 					version="1.0"
 					id="mapts_1"
@@ -181,6 +184,7 @@ export function SVG() {
 					enable-background="new 0 0 1000 1000"
 					xmlSpace="preserve"
 					ref={svgRef}
+					className="min-w-[900px] min-h-[500px]"
 				>
 					<g id="mapts">
 						<path
@@ -1925,6 +1929,7 @@ z"
 				</g> */}
 				</svg>
 			</section>
+			{/* </ScrollArea> */}
 
 			<Modal modalOpen={modalOpen} setModalOpen={setModalOpen} slot={slot} />
 		</>
