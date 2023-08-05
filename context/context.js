@@ -14,11 +14,14 @@ export const MoviesProvider = ({ children }) => {
 	// * moviesData = { searchQuery, fetchedPages, totalPages, totalMovies, moviesList }
 	const updateNewMoviesList = moviesData => dispatch({ type: 'NEW_MOVIES_LIST', payload: moviesData });
 
+	const toggleSlot = slot => dispatch({ type: 'TOGGLE_SLOT', payload: slot });
+
 	// state values and function provided to the components in this context
 	const value = {
 		...state,
 		updateMoviesList,
 		updateNewMoviesList,
+		toggleSlot,
 	};
 
 	return <MoviesContext.Provider value={value}>{children}</MoviesContext.Provider>;

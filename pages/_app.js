@@ -1,11 +1,14 @@
 import { Toaster } from '@/components/ui/toaster';
+import { MoviesProvider } from '@/context/context';
 import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }) {
 	return (
 		<>
-			<Component {...pageProps} />
-			<Toaster />
+			<MoviesProvider>
+				<Component {...pageProps} />
+				<Toaster />
+			</MoviesProvider>
 		</>
 	);
 }

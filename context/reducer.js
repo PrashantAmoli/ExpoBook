@@ -97,6 +97,14 @@ const moviesReducer = (state, action) => {
 				moviesList: [...moviesList.filter(movie => movie.poster_path)],
 			};
 
+		case 'TOGGLE_SLOT':
+			const { slot } = action.payload;
+			// toggle availability of slot with given slot name
+			const slots = state.slots.map(s => (s.slot === slot ? { ...s, available: !s.available } : s));
+			return {
+				slots,
+			};
+
 		default:
 			return state;
 	}
