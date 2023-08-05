@@ -1,13 +1,16 @@
 import { Transition } from '@headlessui/react';
-import { Fragment, Suspense, useState } from 'react';
+import { Fragment, Suspense, useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 
 export default function Booking({ slot }) {
 	const [confirmSlot, setConfirmSlot] = useState(false);
 
+	useEffect(() => {
+		if (confirmSlot === true) Tally.loadEmbeds();
+	}, [confirmSlot]);
+
 	function handleConfirm() {
 		setConfirmSlot(true);
-		Tally.loadEmbeds();
 	}
 
 	return (
