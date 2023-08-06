@@ -14,9 +14,14 @@ export default function Demo() {
 			</Head>
 
 			<main className="w-full min-h-screen">
-				<Button onClick={() => setShowAdmin(!showAdmin)} className="absolute top-1 right-1">
-					Toggle Admin
-				</Button>
+				<div className="flex gap-1 absolute top-1 right-1">
+					<Link href="/demo/new">
+						<Button className="">New</Button>
+					</Link>
+					<Button onClick={() => setShowAdmin(!showAdmin)} className="">
+						Toggle Admin
+					</Button>
+				</div>
 				{showAdmin ? (
 					<section className="container flex items-center justify-center max-h-screen mx-auto pt-7 max-w-screen-2xl">
 						<MyTable />
