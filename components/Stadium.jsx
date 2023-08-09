@@ -90,13 +90,40 @@ export function SVG() {
 
 	useEffect(() => {
 		const anchors = svgRef.current.querySelectorAll('a');
-
+		
 		anchors.forEach(a => {
 			a.classList.add('hover:bg-red-500/50');
 			a.classList.add('relative');
 			a.classList.add('z-50');
 			a.setAttribute('target', '');
 			a.setAttribute('href', '#');
+
+			const red = 
+			'darkred';
+			const dark_red = 
+			'red';
+			const green = '#00ff00';
+			const dark_green = '#ffcc00';
+			const gray = '#f1f1f1';
+
+			let color;
+			const slot_id = a.querySelector('text').innerHTML;
+			
+			// if slot is not available
+			if (!data.find(d => d.slot === slot_id).available) {
+				color = red;
+			} else {
+				color = green;
+			}
+
+			a.querySelectorAll('rect').forEach(rect => {
+				rect.classList.add('hover:bg-red-500/50');
+				rect.setAttribute('fill', `${color}`);
+			});
+			a.querySelectorAll('polygon').forEach(rect => {
+				rect.classList.add('hover:bg-red-500/50');
+				rect.setAttribute('fill', `${color}`);
+			});
 
 			a.addEventListener('click', () => {
 				// rect.setAttribute('fill', '#0b00e4');
@@ -111,6 +138,7 @@ export function SVG() {
 							title: 'Slot not available ',
 							description: 'Contact support to see if there is any cancellation',
 							action: <ToastAction altText="Goto schedule to undo">Okay</ToastAction>,
+							variant: 'destructive'
 						});
 					notAvailableToast();
 				} else {
@@ -123,14 +151,12 @@ export function SVG() {
 
 			a.addEventListener('mouseenter', () => {
 				const slot_id = a.querySelector('text').innerHTML;
-
-				let color = '#000000';
-
+				
 				// if slot is not available
 				if (!data.find(d => d.slot === slot_id).available) {
-					color = '#ff0000';
+					color = dark_red;
 				} else {
-					color = '#00ff00';
+					color = dark_green;
 				}
 				a.querySelectorAll('rect').forEach(rect => {
 					rect.classList.add('hover:bg-red-500/50');
@@ -142,13 +168,22 @@ export function SVG() {
 				});
 			});
 			a.addEventListener('mouseleave', () => {
+				const slot_id = a.querySelector('text').innerHTML;
+	
+				// if slot is not available
+				if (!data.find(d => d.slot === slot_id).available) {
+					color = red;
+				} else {
+					color = green;
+				}
+
 				a.querySelectorAll('rect').forEach(rect => {
 					rect.classList.remove('hover:bg-red-500/50');
-					rect.setAttribute('fill', '#000000');
+					rect.setAttribute('fill', color);
 				});
 				a.querySelectorAll('polygon').forEach(rect => {
 					rect.classList.remove('hover:bg-red-500/50');
-					rect.setAttribute('fill', '#000000');
+					rect.setAttribute('fill', color);
 				});
 			});
 		});
