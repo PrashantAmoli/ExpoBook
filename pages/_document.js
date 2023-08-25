@@ -5,7 +5,7 @@ export default function Document() {
 	return (
 		<Html lang="en">
 			<Head />
-			<body className="overflow-x-hidden scroll-smooth">
+			<body className="overflow-x-hidden transition-all duration-1000 dark:duration-1000 dark:transition-all scroll-smooth dark:scroll-smooth">
 				<Script
 					src="https://tally.so/widgets/embed.js"
 					strategy="beforeInteractive"

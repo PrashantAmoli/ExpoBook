@@ -4,11 +4,51 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const Links = [
+	{
+		name: 'Super Admin',
+		href: '/superadmin',
+		info: 'Super Admin page',
+	},
+	{
+		name: 'Admin',
+		href: '/admin',
+		info: 'Admin page',
+	},
+	{
+		name: 'Sign In',
+		href: '/sign-in',
+		info: 'Sign In page',
+	},
+	{
+		name: 'Sign Up',
+		href: '/sign-up',
+		info: 'Sign Up page',
+	},
+	{
+		name: 'Exhibitions',
+		href: '/exhibitions',
+		info: 'Exhibitions page',
+	},
+	{
+		name: 'Demo',
+		href: '/demo',
+		info: 'Demo page',
+	},
+	{
+		name: 'Test',
+		href: '/tests',
+		info: 'Test layout page',
+	},
+];
+
 export default function Home() {
 	const { toast } = useToast();
+
 	return (
 		<>
 			<Head>
@@ -16,42 +56,27 @@ export default function Home() {
 			</Head>
 
 			<main className="w-full min-h-screen">
-				<section className="container flex items-center justify-center mx-auto h-44">
-					<h1 className="text-2xl text-center sm:text-4xl font-SpaceX">EASEMYEXPO</h1>
+				<section className="container flex flex-col items-center justify-center h-48 mx-auto">
+					<h1 className="text-2xl text-center uppercase sm:text-4xl font-SpaceX">Welcome to ExpoBook</h1>
+					<p className="text-xs text-center">Keep homepage as a public landing page for now add link cards to all the different subpages</p>
 				</section>
-				<section className="container grid grid-cols-1 gap-3 mx-auto my-10 sm:grid-cols-2 justify-items-center sm:gap-10">
-					<Link
-						href="/demo"
-						className="flex items-center justify-center w-full h-20 transition-all rounded-md shadow-lg hover:shadow-xl hover:scale-105"
-					>
-						<h3 className="p-2">Demo Exhibition</h3>
-					</Link>
 
-					<Link
-						href="/demo"
-						className="flex items-center justify-center w-full h-20 transition-all rounded-md shadow-lg hover:shadow-xl hover:scale-105"
-					>
-						<h3 className="p-2">Demo Exhibition</h3>
-					</Link>
+				<section className="container grid max-w-6xl grid-cols-1 gap-3 mx-auto my-10 sm:grid-cols-2 justify-items-center sm:gap-5 lg:grid-cols-3">
+					{Links.map(link => (
+						<Link key={link.name} href={link.href} className="w-full h-full">
+							<Card className="flex flex-col items-center justify-center w-full p-2 cursor-pointer">
+								<CardHeader className="flex flex-col items-center justify-center w-full ">
+									<CardTitle className="text-xl uppercase font-SpaceX">{link.name}</CardTitle>
+								</CardHeader>
 
-					<Link
-						href="/demo"
-						className="flex items-center justify-center w-full h-20 transition-all rounded-md shadow-lg hover:shadow-xl hover:scale-105"
-					>
-						<h3 className="p-2">Demo Exhibition</h3>
-					</Link>
+								<CardContent className="flex flex-col items-center justify-center w-full ">
+									<p className="text-xs">{link.info}</p>
+								</CardContent>
 
-					<div
-						onClick={() =>
-							toast({
-								title: 'Slot not available ',
-								description: 'You can still contact supoort to see if there is any chance of getting this slot',
-							})
-						}
-						className="flex items-center justify-center w-full h-20 transition-all rounded-md shadow-lg hover:shadow-xl hover:scale-105"
-					>
-						<h3 className="p-2">Demo Exhibition</h3>
-					</div>
+								<CardFooter className="flex flex-col items-center justify-center w-full ">{link.href}</CardFooter>
+							</Card>
+						</Link>
+					))}
 				</section>
 			</main>
 		</>
