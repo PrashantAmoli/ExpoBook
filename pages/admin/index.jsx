@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
 import { useAuth, useUser } from '@clerk/clerk-react';
+import { ExhibitionCard } from '@/components/booking/ExhibitionCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const exhibitions = [
 	{
@@ -50,20 +50,28 @@ export default function AdminPage() {
 	const authData = useAuth();
 	const userData = useUser();
 
-	const { data, isLoading, error } = useQuery({
-		queryKey: ['admin'],
-		queryFn: async () => {
-			const { data } = await axios.get('/api/v1');
-			return data;
-		},
-		config: {
-			refetchOnWindowFocus: false,
-			retry: 3,
-			retryDelay: 1000,
-			staleTime: 1000 * 60 * 60 * 2, // 2 hours
-			cacheTime: 1000 * 60 * 60 * 2, // 2 hours
-		},
-	});
+	// const { data, isLoading, error } = useQuery({
+	// 	queryKey: ['admin'],
+	// 	queryFn: async () => {
+	// 		const { data } = await axios.get('/api/v1');
+	// 		return data;
+	// 	},
+	// 	config: {
+	// 		refetchOnWindowFocus: false,
+	// 		retry: 3,
+	// 		retryDelay: 1000,
+	// 		staleTime: 1000 * 60 * 60 * 2, // 2 hours
+	// 		cacheTime: 1000 * 60 * 60 * 2, // 2 hours
+	// 	},
+	// });
+
+	// if (isLoading) {
+	// 	return <div>Loading...</div>;
+	// }
+
+	// if (error) {
+	// 	return <div>Error: {error.message}</div>;
+	// }
 
 	if (userData?.user?.publicMetadata?.role !== 'admin' && userData?.user?.publicMetadata?.role !== 'superadmin') {
 		return (
@@ -82,65 +90,41 @@ export default function AdminPage() {
 		);
 	}
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
-
 	return (
 		<>
 			<Head>
 				<title>Admin Page</title>
 			</Head>
 
-			<main className="w-full min-h-screen">
-				<div className="container mx-auto">
-					{JSON.stringify(data)}
-					<div className="grid grid-cols-1 gap-5 p-2 md:grid-cols-2 xl:grid-cols-3">
-						{exhibitions.map(exhibition => (
-							<Card key={exhibition.id} className="transition-all duration-500 shadow-lg hover:scale-105 hover:shadow-xl hover:-translate-y-3">
-								<CardHeader>
-									<CardTitle>{exhibition.name}</CardTitle>
-								</CardHeader>
+			<main className="w-full min-h-screen py-3">
+				<Tabs defaultValue="cards" className="container mx-auto">
+					<TabsList className="w-full">
+						<TabsTrigger value="cards" className="w-full">
+							Cards
+						</TabsTrigger>
+						<TabsTrigger value="table" className="w-full">
+							Table
+						</TabsTrigger>
+					</TabsList>
+					<Button className="m-1">Create New</Button>
+					<Link href="/admin/exhibitions">
+						<Button className="m-1">Exhibitions</Button>
+					</Link>
+					<Link href="/admin/exhibitions/new">
+						<Button className="m-1">Exhibitions</Button>
+					</Link>
 
-								<CardContent>
-									<CardDescription>{exhibition.description}</CardDescription>
-
-									<div className="flex justify-between w-full my-1">
-										<div className="text-xs text-gray-500">
-											<time dateTime={exhibition.startDate}>{exhibition.startDate}</time> to{' '}
-											<time dateTime={exhibition.endDate}>{exhibition.endDate}</time>
-										</div>
-										<div className="text-sm text-gray-500">
-											<time dateTime={exhibition.createdAt}>{exhibition.createdAt}</time>
-										</div>
-									</div>
-								</CardContent>
-
-								<CardFooter className="flex flex-col items-end gap-2">
-									<div className="flex justify-start w-full gap-1">
-										<Badge variant={exhibition.status === 'active' ? '' : exhibition.status === 'archieved' ? 'secondary' : 'destructive'}>
-											{exhibition.status}
-										</Badge>
-										<Badge>
-											{exhibition.availableSlots} / {exhibition.slots} available
-										</Badge>
-									</div>
-									<Link href={`/admin/exhibitions/${exhibition.id}`}>
-										<Button>View</Button>
-									</Link>
-								</CardFooter>
-							</Card>
-						))}
-					</div>
-				</div>
-
-				<p className="w-full">Current Organization: {authData.orgSlug}</p>
-				<p className="w-full p-2 my-2 mt-20 break-words shadow-xl">{JSON.stringify(authData)}</p>
-				<p className="w-full p-2 my-2 break-words shadow-xl">{JSON.stringify(userData)}</p>
+					<TabsContent value="cards">
+						<div className="grid grid-cols-1 gap-5 p-2 md:grid-cols-2 xl:grid-cols-3">
+							{exhibitions.map(exhibition => (
+								<>
+									<ExhibitionCard exhibition={exhibition} />
+								</>
+							))}
+						</div>
+					</TabsContent>
+					<TabsContent value="table">CRUD Table of all exhibitions here</TabsContent>
+				</Tabs>
 			</main>
 		</>
 	);

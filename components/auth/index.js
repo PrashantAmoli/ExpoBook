@@ -5,6 +5,7 @@ import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut, SignInButton, Sig
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import DropdownMenuWrapper from '../DropdownMenuWrapper';
 
 const publicPages = ['/', '/sign-in/[[...index]]', '/sign-up/[[...index]]', '/admin', '/admin/orders', '/admin/users'];
 
@@ -17,6 +18,8 @@ const Navbar = ({ children }) => {
 				<Link href="/">
 					<h2 className="text-xl text-center lg:text-2xl font-SpaceX">EXPOBOOK</h2>
 				</Link>
+
+				<DropdownMenuWrapper />
 
 				<div className="flex gap-1">
 					{children}
@@ -91,8 +94,6 @@ export default function ClerkWrapper({ children }) {
 								<Button>Sign In</Button>
 							</SignInButton>
 						</Navbar>
-
-						<h2 className="text-xl text-center font-SpaceX">Signed Out</h2>
 
 						<div className="relative">{children}</div>
 
