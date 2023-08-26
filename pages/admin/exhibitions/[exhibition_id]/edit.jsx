@@ -17,3 +17,5 @@ export const ExhibitionEditPage = () => {
 		</>
 	);
 };
+
+export default ExhibitionEditPage;
