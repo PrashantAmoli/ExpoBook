@@ -61,16 +61,20 @@ export const ExhibitionDetailsPage = () => {
 							Form
 						</TabsTrigger>
 					</TabsList>
+
 					<h1 className="my-2 text-2xl font-bold text-center">Exhibition {exhibition_id}</h1>
+
 					<TabsContent value="table">
 						<h3 className="text-center">Slots table for this exhibition</h3>
 						<SlotsTable data={slotsData} />
 						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
 					</TabsContent>
+
 					<TabsContent value="form">
 						<AddSlotsForm exhibition_id={exhibition_id} />
 					</TabsContent>
 				</Tabs>
+
 				<p className="p-2 break-words border rounded">
 					{JSON.stringify(exhibitions?.exhibitions?.find(exhibition => parseInt(exhibition_id) === exhibition.id))}
 				</p>
@@ -104,13 +108,13 @@ export const AddSlotsForm = ({ exhibition_id }) => {
 		const { data: prevEntriesMatch, error: err } = await supabase
 			.from('slots')
 			.select('slot, exhibition_id')
-			.match({ slot: 19, exhibition_id: slotsData.exhibition_id });
+			.match({ slot: slotsData.slot, exhibition_id: slotsData.exhibition_id });
 
 		if (err) console.log(err);
 		// if already exists then return
-		if (!prevEntriesMatch || prevEntriesMatch.length === 0) {
+		if (!prevEntriesMatch || prevEntriesMatch.length !== 0) {
 			toast({
-				title: 'Slot already exists',
+				title: `Slot: ${slotsData.slot} already exists`,
 				description: `Slot already exists. Duplicate slots are not allowed. Please try again with a different slot number. If the problem persists, please contact the administrator.`,
 				variant: 'destructive',
 			});

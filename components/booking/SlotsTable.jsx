@@ -155,6 +155,18 @@ export default function SlotsTable({ data = [] }) {
 				</div>
 			),
 		},
+		{
+			accessorKey: 'exhibition_id',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Exhibition ID
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('exhibition_id')}</div>,
+		},
 
 		{
 			id: 'actions',
@@ -170,9 +182,10 @@ export default function SlotsTable({ data = [] }) {
 								<DotsHorizontalIcon className="w-4 h-4" />
 							</Button>
 						</DropdownMenuTrigger>
+
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(slot.id)}>{JSON.stringify(slot)}</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(slot.id)}>Slot: {slot.slot}</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>View customer</DropdownMenuItem>
 							<DropdownMenuItem>View payment details</DropdownMenuItem>
