@@ -20,6 +20,21 @@ export const Links = [
 		info: 'Admin page',
 	},
 	{
+		name: 'Exhibitions',
+		href: '/admin/exhibitions',
+		info: 'Admin Exhibitions page',
+	},
+	{
+		name: 'Users',
+		href: '/admin/users',
+		info: 'Users page',
+	},
+	{
+		name: 'Orders',
+		href: '/admin/orders',
+		info: 'Orders page',
+	},
+	{
 		name: 'Sign In',
 		href: '/sign-in',
 		info: 'Sign In page',

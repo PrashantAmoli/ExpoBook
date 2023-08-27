@@ -28,27 +28,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import useMovies from '@/context/context';
-import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
+import { Switch } from '../ui/switch';
 
 const data = [
 	{
 		id: 'm5gr84i9',
-		amount: 316,
-		title: 'Project 1',
-		status: 'success',
-		email: 'ken99@yahoo.com',
-		design: 'https://imagekit.io/image8.glb',
-		model: 'https://imagekit.io/image8.glb',
-		password: '123456',
-		images: ['https://imagekit.io/image8.glb', 'https://imagekit.io/image8.glb', 'https://imagekit.io/image8.glb', 'https://imagekit.io/image8.glb'],
+		exhibition_id: 1,
+		slot: '1',
+		description: 'This is the first slot',
+		status: 'available',
+		direct_booking: true,
+		booked: false,
+		length: 4,
+		width: 4,
+		createdAt: '2021-01-01',
+		updatedAt: '2021-01-01',
 	},
 ];
 
-export default function UsersAdminTable({ users, children, className, ...props }) {
-	const { slots: data, toggleSlot, updateMoviesList } = useMovies();
-
+export default function SlotsTable({ data = [] }) {
 	const [sorting, setSorting] = React.useState([]);
 	const [columnFilters, setColumnFilters] = React.useState();
 	const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -69,45 +67,95 @@ export default function UsersAdminTable({ users, children, className, ...props }
 			enableSorting: false,
 			enableHiding: false,
 		},
-		// {
-		// 	accessorKey: 'email',
-		// 	header: ({ column }) => {
-		// 		return (
-		// 			<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-		// 				Email
-		// 				<CaretSortIcon className="w-4 h-4 ml-2" />
-		// 			</Button>
-		// 		);
-		// 	},
-		// 	cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-		// },
-		// {
-		// 	accessorKey: 'role',
-		// 	header: 'Role',
-		// 	cell: ({ row }) => <div className="lowercase">{row.getValue('role')}</div>,
-		// },
-		// {
-		// 	accessorKey: 'first_name',
-		// 	header: 'First Name',
-		// 	cell: ({ row }) => <div className="lowercase">{row.getValue('first_name')}</div>,
-		// },
-		// {
-		// 	accessorKey: 'last_name',
-		// 	header: 'Last Name',
-		// 	cell: ({ row }) => <div className="lowercase">{row.getValue('last_name')}</div>,
-		// },
-		// {
-		// 	accessorKey: 'slot',
-		// 	header: ({ column }) => {
-		// 		return (
-		// 			<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-		// 				Size
-		// 				<CaretSortIcon className="w-4 h-4 ml-2" />
-		// 			</Button>
-		// 		);
-		// 	},
-		// 	cell: ({ row }) => <div className="lowercase">4X4</div>,
-		// },
+		{
+			accessorKey: 'slot',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Slot
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="uppercase">{row.getValue('slot')}</div>,
+		},
+		{
+			accessorKey: 'description',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Description
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="">{row.getValue('description')}</div>,
+		},
+		{
+			accessorKey: 'status',
+			header: 'Status',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Switch checked={row.getValue('status')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
+						<span className="text-xs">{row.getValue('status') ? 'available' : 'booked'}</span>
+					</div>
+				);
+			},
+		},
+		{
+			accessorKey: 'direct_booking',
+			header: 'Direct Booking',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Switch checked={row.getValue('direct_booking')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
+						<span className="text-xs">{row.getValue('direct_booking') ? 'Bookings' : 'Inquireies'}</span>
+					</div>
+				);
+			},
+		},
+		{
+			accessorKey: 'length',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Length
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('length')}</div>,
+		},
+		{
+			accessorKey: 'width',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Width
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('width')}</div>,
+		},
+		{
+			accessorKey: 'size',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Size
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => (
+				<div className="lowercase">
+					{row.getValue('length')}X{row.getValue('width')}
+				</div>
+			),
+		},
+
 		{
 			id: 'actions',
 			enableHiding: false,
@@ -124,7 +172,7 @@ export default function UsersAdminTable({ users, children, className, ...props }
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(slot.id)}>{JSON.stringify({})}</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(slot.id)}>{JSON.stringify(slot)}</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>View customer</DropdownMenuItem>
 							<DropdownMenuItem>View payment details</DropdownMenuItem>
@@ -136,7 +184,7 @@ export default function UsersAdminTable({ users, children, className, ...props }
 	];
 
 	const table = useReactTable({
-		users,
+		data,
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -155,12 +203,7 @@ export default function UsersAdminTable({ users, children, className, ...props }
 	});
 
 	return (
-		<div className={cn('', className)}>
-			<p className="my-5 break-words border">
-				{users.length}
-				{JSON.stringify(data)}
-			</p>
-
+		<div className="w-full">
 			<div className="flex items-center gap-2 py-4">
 				{/* <Input
 					placeholder="Filter emails..."
@@ -238,7 +281,7 @@ export default function UsersAdminTable({ users, children, className, ...props }
 						))}
 					</TableHeader>
 					<TableBody>
-						{table?.getRowModel()?.rows?.length ? (
+						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map(row => (
 								<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 									{row.getVisibleCells().map(cell => (

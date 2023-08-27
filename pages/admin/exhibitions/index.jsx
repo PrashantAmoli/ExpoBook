@@ -21,30 +21,6 @@ const exhibitions = [
 		slots: 200,
 		availableSlots: 100,
 	},
-	{
-		id: 2,
-		name: 'Exhibition 2',
-		description: 'This is the second exhibition',
-		startDate: '2021-02-01',
-		endDate: '2021-02-28',
-		createdAt: '2021-02-01',
-		updatedAt: '2021-02-01',
-		status: 'inactive',
-		slots: 200,
-		availableSlots: 180,
-	},
-	{
-		id: 3,
-		name: 'Exhibition 2',
-		description: 'This is the second exhibition',
-		startDate: '2021-02-01',
-		endDate: '2021-02-28',
-		createdAt: '2021-02-01',
-		updatedAt: '2021-02-01',
-		status: 'archieved',
-		slots: 200,
-		availableSlots: 80,
-	},
 ];
 
 export default function AdminPage() {
@@ -53,13 +29,6 @@ export default function AdminPage() {
 		queryFn: async () => {
 			const { data } = await axios.get('/api/v1/admin/exhibitions');
 			return data;
-		},
-		config: {
-			refetchOnWindowFocus: false,
-			retry: 3,
-			retryDelay: 1000,
-			staleTime: 1000 * 60 * 60 * 2, // 2 hours
-			cacheTime: 1000 * 60 * 60 * 2, // 2 hours
 		},
 	});
 

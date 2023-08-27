@@ -6,13 +6,14 @@ import ClerkWrapper from '@/components/auth';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider, useTheme } from 'next-themes';
 import { Switch } from '@/components/ui/switch';
+import { queryClient } from '@/components/ReactQuery';
 
 export default function App({ Component, pageProps }) {
 	return (
 		<>
 			<ThemeProvider attribute="class" enableSystem={true} defaultTheme="light">
 				<ClerkWrapper>
-					<QueryClientProvider client={new QueryClient()}>
+					<QueryClientProvider client={queryClient}>
 						<MoviesProvider>
 							<Component {...pageProps} />
 
