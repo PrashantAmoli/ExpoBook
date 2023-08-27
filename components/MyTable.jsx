@@ -67,8 +67,8 @@ const data = [
 	},
 ];
 
-export default function MyTable() {
-	const { slots: data, toggleSlot, updateMoviesList } = useMovies();
+export default function MyTable({ data }) {
+	// const { slots: data, toggleSlot, updateMoviesList } = useMovies();
 
 	const [sorting, setSorting] = React.useState([]);
 	const [columnFilters, setColumnFilters] = React.useState();
@@ -103,19 +103,7 @@ export default function MyTable() {
 			cell: ({ row }) => <div className="uppercase">{row.getValue('slot')}</div>,
 		},
 		{
-			accessorKey: 'available',
-			header: 'Status',
-			cell: ({ row }) => {
-				return (
-					<div className="flex gap-2">
-						<Switch checked={row.getValue('available')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
-						<span className="text-xs">{row.getValue('available') ? 'Available' : 'Booked'}</span>
-					</div>
-				);
-			},
-		},
-		{
-			accessorKey: 'slot',
+			accessorKey: 'size',
 			header: ({ column }) => {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
@@ -124,7 +112,71 @@ export default function MyTable() {
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase">4X4</div>,
+			cell: ({ row }) => (
+				<div className="lowercase">
+					{row.getValue('length') || 10}X{row.getValue('width') || 12}
+				</div>
+			),
+		},
+		{
+			accessorKey: 'booked',
+			header: 'Status',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Switch checked={row.getValue('booked')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
+						<span className="text-xs">{row.getValue('booked') ? 'Booked' : 'Available'}</span>
+					</div>
+				);
+			},
+		},
+		{
+			accessorKey: 'direct_booking',
+			header: 'Direct Booking',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Switch checked={row.getValue('direct_booking')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
+						<span className="text-xs">{row.getValue('direct_booking') ? 'Available' : 'Booked'}</span>
+					</div>
+				);
+			},
+		},
+		{
+			accessorKey: 'status',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Status
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('status')}</div>,
+		},
+		{
+			accessorKey: 'id',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						ID
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('id')}</div>,
+		},
+		{
+			accessorKey: 'exhibition_id',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Exhibition ID
+						<CaretSortIcon className="w-4 h-4 ml-2" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => <div className="lowercase">{row.getValue('exhibition_id')}</div>,
 		},
 		// {
 		// 	accessorKey: 'amount',

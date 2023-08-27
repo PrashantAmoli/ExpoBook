@@ -13,6 +13,11 @@ const Navbar = ({ children }) => {
 	const { theme, setTheme } = useTheme();
 	const userData = useUser();
 
+	const router = useRouter();
+	const { pathname } = router;
+
+	if (pathname === '/demo') return <></>;
+
 	return (
 		<>
 			<nav className="relative inset-x-0 top-0 z-30 items-center justify-center hidden w-full shadow-xl dark:shadow-xl dark:shadow-blue-300/10 sm:flex backdrop-blur">
