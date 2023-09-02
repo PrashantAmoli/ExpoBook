@@ -29,20 +29,17 @@ export default async function handler(req, res) {
           await supabase
             .from("organizers")
             .insert({
-              id: evt.data.id,
+              clerk_id: evt.data.id,
               email: evt.data.email_addresses[0].email_address,
               first_name: evt.data.first_name,
               last_name: evt.data.last_name,
               clerk_data: evt.data,
-              verified: false,
-              credits: 1000,
-              role: "admin",
             })
             .then((response) => {
-              res.status(200).json({ message: "User added successfully!" });
+              res.status(200).json({ message: "Organizer added successfully!" });
             })
             .catch((e) => {
-              res.status(500).json({ message: "Add user operation failed! " + e });
+              res.status(500).json({ message: "Add organizer operation failed! " + e });
             });
         }
 
