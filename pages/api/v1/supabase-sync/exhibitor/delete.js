@@ -6,13 +6,16 @@ export default async function handler(req, res) {
     switch (evt.type) {
       case "user.deleted":
         await supabase
-          .from("users")
-          .delete().eq("id", evt.data.id)
+          .from("exhibitors")
+          .update({
+            clerk_id: "",
+            registered: false
+          }).eq("clerk_id", evt.data.id)
           .then((response) => {
-            res.status(200).json({ message: "User deleted successfully!" });
+            res.status(200).json({ message: "Exhibitor deleted successfully!" });
           })
           .catch((e) => {
-            res.status(500).json({ message: "Delete user operation failed! " + e });
+            res.status(500).json({ message: "Delete exhibitor operation failed! " + e });
           });
         break;
       default:
