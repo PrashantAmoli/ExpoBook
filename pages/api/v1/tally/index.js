@@ -5,6 +5,7 @@ export default async function handler(req, res) {
 	const { method } = req;
 
 	const TallySubmissionSample = req.body;
+	console.log('TallySubmissionSample', TallySubmissionSample);
 
 	const submissionData = {};
 
@@ -21,6 +22,9 @@ export default async function handler(req, res) {
 	submissionData.address = TallySubmissionSample.data.fields[14].value;
 
 	TallySubmissions.push(submissionData);
+	console.log('submissionData', submissionData);
+
+	console.log('TallySubmissions', TallySubmissions);
 
 	res.status(200).json({ ...submissionData, ...TallySubmissionSample });
 }
