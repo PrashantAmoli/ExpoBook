@@ -29,6 +29,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '../ui/switch';
+import { supabase } from '@/utils/supabase';
+import { Badge } from '../ui/badge';
 
 const data = [
 	{
@@ -97,8 +99,7 @@ export default function SlotsTable({ data = [] }) {
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
-						<Switch checked={row.getValue('status')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
-						<span className="text-xs">{row.getValue('status') ? 'available' : 'booked'}</span>
+						<Badge variant={''}>{row.getValue('status') ? 'available' : 'booked'}</Badge>
 					</div>
 				);
 			},
@@ -109,8 +110,20 @@ export default function SlotsTable({ data = [] }) {
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
-						<Switch checked={row.getValue('direct_booking')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
-						<span className="text-xs">{row.getValue('direct_booking') ? 'Bookings' : 'Inquireies'}</span>
+						<Switch checked={row.getValue('direct_booking')} />
+						<span className="text-xs">{row.getValue('direct_booking') ? 'Bookings' : 'Inquiries'}</span>
+					</div>
+				);
+			},
+		},
+		{
+			accessorKey: 'booked',
+			header: 'Booked',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Switch checked={row.getValue('booked')} />
+						<span className="text-xs">{row.getValue('booked') ? 'Booked' : 'Available'}</span>
 					</div>
 				);
 			},
@@ -171,6 +184,7 @@ export default function SlotsTable({ data = [] }) {
 		{
 			id: 'actions',
 			enableHiding: false,
+			pinned: 'left',
 			cell: ({ row }) => {
 				const slot = row.original;
 
@@ -187,11 +201,59 @@ export default function SlotsTable({ data = [] }) {
 							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(slot.id)}>Slot: {slot.slot}</DropdownMenuItem>
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>Toggle Direct Booking</DropdownMenuItem>
-							<DropdownMenuItem>Toggle Status</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={async () => {
+									const confirmed = window.confirm('Are you sure you want to toggle direct booking?');
+									if (confirmed) {
+										const res = await supabase
+											.from('slots')
+											.update({ direct_booking: !slot.direct_booking })
+											.match({ id: slot.id, exhibition_id: slot.exhibition_id, slot: slot.slot });
+										if (res?.error) {
+											alert(res.error.message);
+										}
+
+										console.log('Toggle Direct Booking', res);
+									}
+								}}
+							>
+								Toggle Direct Booking
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={async () => {
+									const confirmed = window.confirm('Are you sure you want to toggle booking status?');
+									if (confirmed) {
+										const res = await supabase
+											.from('slots')
+											.update({ booked: !slot.booked })
+											.match({ id: slot.id, exhibition_id: slot.exhibition_id, slot: slot.slot });
+										if (res?.error) {
+											alert(res.error.message);
+										}
+
+										console.log('Toggle Booking Status', res);
+									}
+								}}
+							>
+								Toggle Status
+							</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>Edit</DropdownMenuItem>
-							<DropdownMenuItem>Delete</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={async () => {
+									const confirmed = window.confirm('Are you sure you want to delete this slot?');
+									if (confirmed) {
+										const res = await supabase.from('slots').delete().match({ id: slot.id, exhibition_id: slot.exhibition_id, slot: slot.slot });
+										if (res?.error) {
+											alert(res.error.message);
+										}
+
+										console.log('delete slot', res);
+									}
+								}}
+							>
+								Delete
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);
@@ -237,7 +299,7 @@ export default function SlotsTable({ data = [] }) {
 
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="outline">Open</Button>
+						<Button variant="outline">Status: {statusFilter}</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent className="w-56">
 						<DropdownMenuLabel>Panel Position</DropdownMenuLabel>
@@ -245,8 +307,12 @@ export default function SlotsTable({ data = [] }) {
 						<DropdownMenuRadioGroup
 							value={statusFilter}
 							onChange={event => table.getColumn('status')?.setFilterValue(statusFilter.toLowerCase())}
-							onValueChange={setStatusFilter}
+							onValueChange={e => {
+								table.getColumn('status')?.setFilterValue(e);
+								setStatusFilter(e);
+							}}
 						>
+							<DropdownMenuRadioItem value="available">available</DropdownMenuRadioItem>
 							<DropdownMenuRadioItem value="top">success</DropdownMenuRadioItem>
 							<DropdownMenuRadioItem value="bottom">failed</DropdownMenuRadioItem>
 							<DropdownMenuRadioItem value="right">error</DropdownMenuRadioItem>
