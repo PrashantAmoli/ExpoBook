@@ -524,7 +524,7 @@ const Wrapper = props => {
 export default function SVG2ReactPlugin({ bookingData = SlotsData }) {
 	return (
 		<>
-			<section className="flex justify-center w-full min-h-screen px-2 pb-2 overflow-auto pt-9">
+			<section className="flex justify-center w-full min-h-screen overflow-auto pt-9">
 				<Tabs defaultValue="booking" className="w-full">
 					<TabsList className="absolute w-full top-1">
 						<TabsTrigger value="booking" className="w-full animate-pulse">
@@ -539,9 +539,9 @@ export default function SVG2ReactPlugin({ bookingData = SlotsData }) {
 						<HBLFShows bookingData={bookingData} />
 					</TabsContent>
 					<TabsContent value="images" className="w-full">
-						<Image src={'/next.svg'} alt={'next'} className="w-11/12 max-w-sm my-2" width={300} height={300} />
+						{/* <Image src={'/next.svg'} alt={'next'} className="w-11/12 max-w-sm my-2" width={300} height={300} /> */}
 
-						<p className="break-words">{JSON.stringify(bookingData)}</p>
+						<embed src="/HBLFShow.pdf" width="100%" height="100%" className="w-full min-h-screen " />
 					</TabsContent>
 				</Tabs>
 			</section>
