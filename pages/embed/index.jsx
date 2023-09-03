@@ -7,11 +7,12 @@ import { supabase } from '@/utils/supabase';
 
 export async function getServerSideProps(context) {
 	const { data: bookingData, error } = await supabase.from('slots').select('*').eq('exhibition_id', '4');
+	if (error) console.log('Error: ', error);
 
-	console.log('bookingData: ', bookingData);
 	return {
 		props: {
 			bookingData: bookingData ? bookingData : {},
+			error: error ? error : {},
 		}, // will be passed to the page component as props
 	};
 }
@@ -63,7 +64,7 @@ const HBLFShows = ({ bookingData }) => {
 					return;
 				}
 
-				const slotData = SlotsData.find(slot => {
+				const slotData = bookingData.find(slot => {
 					if (slot.slot == slotId || slot.slot === slotId) return slot.booked;
 				});
 
