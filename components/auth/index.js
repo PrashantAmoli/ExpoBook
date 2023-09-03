@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DropdownMenuWrapper from '../DropdownMenuWrapper';
 
-const publicPages = ['/', '/sign-in/[[...index]]', '/sign-up/[[...index]]', '/admin', '/admin/orders', '/admin/users'];
+const publicPages = ['/', '/sign-in/[[...index]]', '/sign-up/[[...index]]', '/admin', '/admin/orders', '/admin/users', '/embed', '/demo', '/tests'];
 
 const Navbar = ({ children }) => {
 	const { theme, setTheme } = useTheme();
@@ -16,7 +16,7 @@ const Navbar = ({ children }) => {
 	const router = useRouter();
 	const { pathname } = router;
 
-	if (pathname === '/demo' || pathname.includes('demo') || pathname.includes('embed')) return <></>;
+	if (pathname === '/demo' || pathname.includes('demo') || pathname.includes('embed') || pathname.includes('tests')) return <></>;
 
 	return (
 		<>

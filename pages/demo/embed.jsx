@@ -18,7 +18,7 @@ export default function EmbedDemo() {
 
 			<main className="w-full">
 				<iframe
-					src="https://beta-expobook.vercel.app/demo"
+					src="https://beta-expobook.vercel.app/embed"
 					width={typeof window !== 'undefined' ? window.innerWidth : '100%'}
 					height={typeof window !== 'undefined' ? window.innerHeight : '88vh'}
 					frameborder="0"
