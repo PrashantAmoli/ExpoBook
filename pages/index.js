@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const inter = Inter({ subsets: ['latin'] });
 
