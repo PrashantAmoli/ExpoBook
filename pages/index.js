@@ -78,8 +78,8 @@ export default function Home() {
 				</section>
 
 				<section className="container grid max-w-6xl grid-cols-1 gap-3 mx-auto my-10 sm:grid-cols-2 justify-items-center sm:gap-5 lg:grid-cols-3">
-					{Links.map(link => (
-						<Link key={link.name} href={link.href} className="w-full h-full">
+					{Links.map((link, key) => (
+						<Link key={key} href={link.href} className="w-full h-full">
 							<Card className="flex flex-col items-center justify-center w-full p-2 cursor-pointer">
 								<CardHeader className="flex flex-col items-center justify-center w-full ">
 									<CardTitle className="text-xl uppercase font-SpaceX">{link.name}</CardTitle>

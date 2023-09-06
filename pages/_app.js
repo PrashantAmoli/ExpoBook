@@ -7,6 +7,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider, useTheme } from 'next-themes';
 import { Switch } from '@/components/ui/switch';
 import { queryClient } from '@/components/ReactQuery';
+import dynamic from 'next/dynamic';
+const CrispChatWidget = dynamic(() => import('@/components/CrispChatWidget'), { ssr: false });
 
 export default function App({ Component, pageProps }) {
 	return (
@@ -16,6 +18,8 @@ export default function App({ Component, pageProps }) {
 					<QueryClientProvider client={queryClient}>
 						<MoviesProvider>
 							<Component {...pageProps} />
+
+							<CrispChatWidget />
 
 							<Toaster />
 
