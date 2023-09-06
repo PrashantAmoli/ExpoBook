@@ -93,6 +93,22 @@ export default function Home() {
 							</Card>
 						</Link>
 					))}
+
+					<Card className="flex flex-col items-center justify-center w-full p-2 cursor-pointer">
+						<CardHeader className="flex flex-col items-center justify-center w-full ">
+							<CardTitle className="text-xl uppercase font-SpaceX">Checkout</CardTitle>
+						</CardHeader>
+
+						<CardContent className="flex flex-col items-center justify-center w-full ">
+							<p className="text-xs">Stripe checkout</p>
+						</CardContent>
+
+						<CardFooter className="flex flex-col items-center justify-center w-full ">
+							<form action="/api/v1/stripe/checkout" method="POST">
+								<Button type="submit">Pay</Button>
+							</form>
+						</CardFooter>
+					</Card>
 				</section>
 			</main>
 		</>

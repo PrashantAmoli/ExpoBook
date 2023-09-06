@@ -66,7 +66,9 @@ export const ExhibitionDetailsPage = () => {
 
 					<TabsContent value="table">
 						<h3 className="text-center">Slots table for this exhibition</h3>
+
 						<SlotsTable data={slotsData} />
+
 						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
 					</TabsContent>
 

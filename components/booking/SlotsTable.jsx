@@ -31,6 +31,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Switch } from '../ui/switch';
 import { supabase } from '@/utils/supabase';
 import { Badge } from '../ui/badge';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const data = [
 	{
@@ -55,6 +57,9 @@ export default function SlotsTable({ data = [] }) {
 	const [rowSelection, setRowSelection] = React.useState({});
 	const [statusFilter, setStatusFilter] = React.useState('all');
 
+	const router = useRouter();
+	const { exhibition_id } = router.query;
+
 	const columns = [
 		{
 			id: 'select',
@@ -75,11 +80,11 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Slot
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="uppercase">{row.getValue('slot')}</div>,
+			cell: ({ row }) => <div className="text-center uppercase">{row.getValue('slot')}</div>,
 		},
 		{
 			accessorKey: 'description',
@@ -87,11 +92,24 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Description
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="">{row.getValue('description')}</div>,
+			cell: ({ row }) => <div className="w-40 truncate">{row.getValue('description')}</div>,
+		},
+		{
+			accessorKey: 'open',
+			header: 'Open',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<Link href={`/admin/exhibitions/${exhibition_id}/${row.getValue('slot')}`}>
+							<Button variant="outline">Open</Button>
+						</Link>
+					</div>
+				);
+			},
 		},
 		{
 			accessorKey: 'status',
@@ -134,11 +152,11 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Length
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase">{row.getValue('length')}</div>,
+			cell: ({ row }) => <div className="text-center lowercase">{row.getValue('length')}</div>,
 		},
 		{
 			accessorKey: 'width',
@@ -146,11 +164,11 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Width
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase">{row.getValue('width')}</div>,
+			cell: ({ row }) => <div className="text-center lowercase">{row.getValue('width')}</div>,
 		},
 		{
 			accessorKey: 'size',
@@ -158,7 +176,7 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Size
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
@@ -174,11 +192,11 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Exhibition ID
-						<CaretSortIcon className="w-4 h-4 ml-2" />
+						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase">{row.getValue('exhibition_id')}</div>,
+			cell: ({ row }) => <div className="text-center lowercase">{row.getValue('exhibition_id')}</div>,
 		},
 
 		{
@@ -325,7 +343,7 @@ export default function SlotsTable({ data = [] }) {
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="outline" className="ml-auto">
-							Columns <ChevronDownIcon className="w-4 h-4 ml-2" />
+							Columns <ChevronDownIcon className="w-4 h-4 ml-1" />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
