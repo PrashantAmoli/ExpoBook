@@ -1,8 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, Suspense } from 'react';
-import { Booking, BookingForm } from './booking';
+import { Booking } from './booking';
+import BookingForm from '@/components/forms/BookingForm';
 
-export default function Modal({ modalOpen, setModalOpen, slot }) {
+export default function Modal({ modalOpen, setModalOpen, slot, exhibitionData, slotsData }) {
 	function handleClose() {
 		setModalOpen(false);
 	}
@@ -83,7 +84,7 @@ export default function Modal({ modalOpen, setModalOpen, slot }) {
 									</Suspense> */}
 
 									{/* <Booking slot={slot} /> */}
-									<BookingForm slot={slot} />
+									<BookingForm slot={slot} exhibitionData={exhibitionData} slotsData={slotsData} />
 
 									{/* <p className="text-center">In-case of any problem try contacting support</p> */}
 

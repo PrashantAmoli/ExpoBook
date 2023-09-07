@@ -2,14 +2,112 @@ import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { supabase } from '@/utils/supabase';
+import { useToast } from '../ui/use-toast';
 
-export const BookingForm = ({ slot }) => {
+export const BookingForm = ({ slot, exhibitionData, slotsData }) => {
 	const [formData, setFormData] = useState({ slot: slot });
 	const [required, setRequired] = useState(false);
 
+	const { toast } = useToast();
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+		const form = e.target;
+		const formData = new FormData(form);
+		const payload = Object.fromEntries(formData);
+
+		const slot_id = slotsData?.find(slotData => slotData.slot === `${slot}`)?.id;
+		if (!slot_id) {
+			console.log(`Slot ID could not be found for ${slot}`);
+			toast({
+				title: 'Error: Slot ID could not be found',
+				description: 'Try refreshing the page. If the problem persists, please contact support.',
+				variant: 'destructive',
+			});
+			return;
+		}
+
+		const exhibition_id = exhibitionData?.id;
+		if (!exhibition_id) {
+			console.log(exhibitionData);
+			console.log(`Exhibition ID could not be found for exhibition: ${exhibitionData?.title}`);
+			toast({
+				title: 'Error: Exhibition ID could not be found',
+				description: 'Try refreshing the page. If the problem persists, please contact support.',
+				variant: 'destructive',
+			});
+			return;
+		}
+
+		const submission = {
+			exhibition_id: exhibition_id,
+			slot_id: slot_id,
+			slot: slot,
+			email: payload.email,
+			first_name: payload.first_name,
+			last_name: payload.last_name,
+			// personal_email: payload.personal_email,
+			phone_no: payload.phone,
+			company: payload.company,
+			// position: payload.position,
+			// website: payload.website,
+			// address: payload.address,
+			// city: payload.city,
+			// state: payload.state,
+		};
+
+		// TODO: Add validation for all form fields
+
+		if (
+			!submission?.email ||
+			!submission?.first_name ||
+			!submission?.last_name ||
+			!submission?.phone_no ||
+			!submission?.company ||
+			!submission?.slot ||
+			!submission?.slot_id ||
+			!submission?.exhibition_id
+		) {
+			console.log('Missing required fields', submission);
+			toast({
+				title: 'Error: Missing required fields',
+				description: 'Please fill out all required fields.',
+				variant: 'destructive',
+			});
+			return;
+		}
+
+		const res = await supabase.from('inquiries').insert(submission);
+
+		if (res.error) {
+			toast({
+				title: 'Error',
+				description: res.error.message,
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				variant: 'destructive',
+			});
+			console.log(res.error);
+		} else {
+			toast({
+				title: 'Success',
+				description: 'Your inquiry has been submitted successfully.',
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+				variant: 'solid',
+			});
+		}
+	};
+
 	return (
 		<>
-			<form className="flex flex-col w-full max-w-2xl gap-5 p-1 mx-auto my-5 overflow-y-auto border-blue-500 sm:p-4 rounded-2xl">
+			<form
+				className="flex flex-col w-full max-w-2xl gap-5 p-1 mx-auto my-5 overflow-y-auto border-blue-500 sm:p-4 rounded-2xl"
+				onSubmit={e => handleSubmit(e)}
+			>
 				<div className="flex flex-col gap-3 p-3 border rounded-2xl">
 					<div className="flex flex-col w-full gap-1">
 						<Label className="capitalize" htmlFor="first_name">
@@ -133,17 +231,10 @@ export const BookingForm = ({ slot }) => {
 				</div>
 
 				<div className="flex flex-row-reverse gap-2">
-					<Button
-						className=""
-						onClick={() => {
-							const confirmation = confirm('Are you sure you want to submit?');
-							if (confirmation) {
-								console.log(formData);
-							}
-						}}
-					>
+					<Button className="" type="submit">
 						Submit
 					</Button>
+
 					<Button className="" variant="outline">
 						Cancel
 					</Button>

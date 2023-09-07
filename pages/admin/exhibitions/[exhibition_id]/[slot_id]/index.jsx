@@ -23,7 +23,7 @@ export default function SlotDetailsPage() {
 			</Head>
 
 			<main className="w-full min-h-screen">
-				<Tabs defaultValue="table" className="container w-full mt-2">
+				<Tabs defaultValue="details" className="container w-full mt-2">
 					<TabsList className="w-full">
 						<TabsTrigger value="details" className="w-full capitalize">
 							Details

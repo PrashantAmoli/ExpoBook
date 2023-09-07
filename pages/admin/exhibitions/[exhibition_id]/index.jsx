@@ -51,8 +51,8 @@ export const ExhibitionDetailsPage = () => {
 				<title>Exhibition {exhibition_id}</title>
 			</Head>
 
-			<main className="w-full min-h-screen py-3">
-				<Tabs defaultValue="table" className="container w-full">
+			<main className="w-full min-h-screen px-2 py-3">
+				<Tabs defaultValue="table" className="w-full mx-auto lg:container">
 					<TabsList className="w-full">
 						<TabsTrigger value="table" className="w-full">
 							Table

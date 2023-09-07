@@ -6,22 +6,25 @@ import Image from 'next/image';
 import { supabase } from '@/utils/supabase';
 
 export async function getServerSideProps(context) {
-	const { data: bookingData, error } = await supabase.from('slots').select('*').eq('exhibition_id', '4');
-	if (error) console.log('Error: ', error);
+	const { data: slotsData, bookingDataError } = await supabase.from('slots').select('*').eq('exhibition_id', '4');
+	if (bookingDataError) console.log('Error: ', bookingDataError);
+
+	const { data: exhibitionData, exhibitionDataError } = await supabase.from('exhibitions').select('*').eq('id', '4').single();
+	if (exhibitionDataError) console.log('Error: ', exhibitionDataError);
 
 	return {
 		props: {
-			bookingData: bookingData ? bookingData : {},
-			error: error ? error : {},
+			slotsData: slotsData ? slotsData : {},
+			exhibitionData: exhibitionData ? exhibitionData : {},
 		}, // will be passed to the page component as props
 	};
 }
 
-const HBLFShows = ({ bookingData }) => {
+const HBLFShows = ({ slotsData, exhibitionData }) => {
 	const [modalOpen, setModalOpen] = React.useState(false);
 	const [slot, setSlot] = React.useState(null);
 
-	// const [bookingData, setBookingData] = React.useState({ ...props?.bookingData });
+	// const [slotsData, setBookingData] = React.useState({ ...props?.slotsData });
 
 	const { toast } = useToast();
 
@@ -36,7 +39,7 @@ const HBLFShows = ({ bookingData }) => {
 			});
 
 			const slotID = g.querySelector('path.slot').classList[1]; // Get slot number from class
-			const slotData = bookingData.find(slot => {
+			const slotData = slotsData.find(slot => {
 				console.log('slot: ', slot.slot, slot.booked);
 				if (slot.slot == slotID || slot.slot === slotID) return slot.booked;
 			});
@@ -64,7 +67,7 @@ const HBLFShows = ({ bookingData }) => {
 					return;
 				}
 
-				const slotData = bookingData.find(slot => {
+				const slotData = slotsData.find(slot => {
 					if (slot.slot == slotId || slot.slot === slotId) return slot.booked;
 				});
 
@@ -102,7 +105,7 @@ const HBLFShows = ({ bookingData }) => {
 
 	return (
 		<>
-			<Modal modalOpen={modalOpen} setModalOpen={setModalOpen} slot={slot} />
+			<Modal modalOpen={modalOpen} setModalOpen={setModalOpen} slot={slot} exhibitionData={exhibitionData} slotsData={slotsData} />
 
 			{/* <svg xmlns="http://www.w3.org/2000/svg" width="735" height="699" fill="none" viewBox="0 0 735 699" className="mx-auto cursor-move">
 				<g class="HBLFShows Hall 1">
@@ -1066,7 +1069,7 @@ const Wrapper = props => {
 	);
 };
 
-export default function SVG2ReactPlugin({ bookingData = SlotsData }) {
+export default function SVG2ReactPlugin({ slotsData = SlotsData, exhibitionData }) {
 	return (
 		<>
 			<section className="flex justify-center w-full min-h-screen overflow-auto pt-9">
@@ -1081,7 +1084,7 @@ export default function SVG2ReactPlugin({ bookingData = SlotsData }) {
 					</TabsList>
 
 					<TabsContent value="booking" className="flex justify-center w-full">
-						<HBLFShows bookingData={bookingData} />
+						<HBLFShows slotsData={slotsData} exhibitionData={exhibitionData} />
 					</TabsContent>
 					<TabsContent value="images" className="w-full">
 						{/* <Image src={'/next.svg'} alt={'next'} className="w-11/12 max-w-sm my-2" width={300} height={300} /> */}
