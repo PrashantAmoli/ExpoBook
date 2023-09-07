@@ -18,7 +18,7 @@ const DefaultData = {
 	confirmText: 'Continue',
 };
 
-export function ConfirmationPrompt({ children, title, description, onConfirm, onCancel, cancelText, confirmText }) {
+export function ConfirmationPrompt({ children, title, description, onConfirm, onCancel, cancelText, confirmText, buttons }) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>{children ? children : <Button variant="Confirm">Show Dialog</Button>}</AlertDialogTrigger>
@@ -32,7 +32,13 @@ export function ConfirmationPrompt({ children, title, description, onConfirm, on
 				<AlertDialogFooter>
 					<AlertDialogCancel onClick={onCancel || null}>{cancelText || DefaultData.cancelText}</AlertDialogCancel>
 
-					<AlertDialogAction onClick={onConfirm || null}>{confirmText || DefaultData.confirmText}</AlertDialogAction>
+					{buttons ? (
+						buttons
+					) : (
+						<AlertDialogAction onClick={onConfirm || null} type="submit">
+							{confirmText || DefaultData.confirmText}
+						</AlertDialogAction>
+					)}
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

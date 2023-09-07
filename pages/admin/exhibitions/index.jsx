@@ -28,7 +28,8 @@ export default function AdminPage() {
 		queryKey: ['exhibitions'],
 		queryFn: async () => {
 			const { data } = await axios.get('/api/v1/admin/exhibitions');
-			return data;
+			console.log(data);
+			return data?.exhibitions;
 		},
 	});
 
@@ -53,6 +54,7 @@ export default function AdminPage() {
 							<TabsTrigger value="cards" className="w-full">
 								Cards
 							</TabsTrigger>
+
 							<TabsTrigger value="table" className="w-full">
 								Table
 							</TabsTrigger>
@@ -63,7 +65,7 @@ export default function AdminPage() {
 
 						<TabsContent value="cards">
 							<div className="grid grid-cols-1 gap-5 p-2 md:grid-cols-2 xl:grid-cols-3">
-								{data.exhibitions.reverse().map(exhibition => (
+								{data.reverse().map(exhibition => (
 									<>
 										<ExhibitionCard exhibition={exhibition} />
 									</>
@@ -73,7 +75,7 @@ export default function AdminPage() {
 						<TabsContent value="table">CRUD Table of all exhibitions here</TabsContent>
 					</Tabs>
 
-					<p className="break-words">{JSON.stringify(data.exhibitions)}</p>
+					<p className="break-words">{JSON.stringify(data)}</p>
 				</SuperAdmin>
 			</main>
 		</>

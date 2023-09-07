@@ -49,9 +49,16 @@ export const ExhibitionCard = ({ exhibition }) => {
 							{exhibition.available_slots} / {exhibition.slots} available
 						</Badge>
 					</div>
-					<Link href={`/admin/exhibitions/${exhibition.id}`}>
-						<Button>View</Button>
-					</Link>
+
+					<div className="flex gap-2">
+						<Link href={`/admin/exhibitions/${exhibition.id}/edit`}>
+							<Button variant="outline">Edit</Button>
+						</Link>
+
+						<Link href={`/admin/exhibitions/${exhibition.id}`}>
+							<Button>View</Button>
+						</Link>
+					</div>
 				</CardFooter>
 			</Card>
 		</>

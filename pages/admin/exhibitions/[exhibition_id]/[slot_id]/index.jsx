@@ -8,8 +8,10 @@ export default function SlotDetailsPage() {
 	const router = useRouter();
 	const { exhibition_id, slot_id } = router.query;
 
-	const { exhibitions } = useQueryClient()?.getQueryData(['exhibitions']);
+	const exhibitions = useQueryClient()?.getQueryData(['exhibitions']);
+	console.log('exhibitions', exhibitions);
 	const exhibition = exhibitions?.find(exhibition => exhibition.id == exhibition_id);
+	console.log('exhibition', exhibition);
 
 	const allSlotData = useQueryClient()?.getQueryData(['slots', exhibition_id]);
 	const slotData = allSlotData?.find(slot => slot.slot == slot_id);
