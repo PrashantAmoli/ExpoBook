@@ -46,7 +46,7 @@ export default function AdminPage() {
 				<title>Admin Page</title>
 			</Head>
 
-			<main className="w-full min-h-screen py-3">
+			<main className="w-full min-h-screen py-2">
 				<SuperAdmin showMessage>
 					<Tabs defaultValue="cards" className="container mx-auto">
 						<TabsList className="w-full">
@@ -61,11 +61,9 @@ export default function AdminPage() {
 							<Button className="m-1">Create New</Button>
 						</Link>
 
-						<p className="break-words">{JSON.stringify(data.exhibitions)}</p>
-
 						<TabsContent value="cards">
 							<div className="grid grid-cols-1 gap-5 p-2 md:grid-cols-2 xl:grid-cols-3">
-								{data.exhibitions.map(exhibition => (
+								{data.exhibitions.reverse().map(exhibition => (
 									<>
 										<ExhibitionCard exhibition={exhibition} />
 									</>
@@ -74,6 +72,8 @@ export default function AdminPage() {
 						</TabsContent>
 						<TabsContent value="table">CRUD Table of all exhibitions here</TabsContent>
 					</Tabs>
+
+					<p className="break-words">{JSON.stringify(data.exhibitions)}</p>
 				</SuperAdmin>
 			</main>
 		</>

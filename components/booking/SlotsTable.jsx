@@ -33,6 +33,7 @@ import { supabase } from '@/utils/supabase';
 import { Badge } from '../ui/badge';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const data = [
 	{
@@ -403,10 +404,38 @@ export default function SlotsTable({ data = [] }) {
 				<div className="flex-1 text-sm text-muted-foreground">
 					{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
 				</div>
-				<div className="space-x-2">
+
+				<div className="flex space-x-2">
+					<div className="flex">
+						Rows per page
+						<Select
+							onValueChange={e => {
+								table.setPageSize(e);
+							}}
+						>
+							<SelectTrigger className="w-fit">
+								<SelectValue placeholder="10" />
+							</SelectTrigger>
+
+							<SelectContent defaultValue={300}>
+								<SelectGroup>
+									<SelectLabel>No. of rows</SelectLabel>
+									<SelectItem value={10}>10</SelectItem>
+									<SelectItem value={25}>25</SelectItem>
+									<SelectItem value={50}>50</SelectItem>
+									<SelectItem value={100}>100</SelectItem>
+									<SelectItem value={150}>150</SelectItem>
+									<SelectItem value={200}>200</SelectItem>
+									<SelectItem value={300}>300</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</div>
+
 					<Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
 						Previous
 					</Button>
+
 					<Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
 						Next
 					</Button>

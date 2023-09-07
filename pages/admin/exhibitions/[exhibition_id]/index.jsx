@@ -62,13 +62,12 @@ export const ExhibitionDetailsPage = () => {
 						</TabsTrigger>
 					</TabsList>
 
-					<h1 className="my-2 text-2xl font-bold text-center">Exhibition {exhibition_id}</h1>
-
 					<TabsContent value="table">
-						<h3 className="text-center">Slots table for this exhibition</h3>
+						<h2 className="mt-2 text-xl font-bold text-center">Exhibition {exhibition_id}</h2>
 
 						<SlotsTable data={slotsData} />
 
+						<p className="p-2 break-words border rounded">{JSON.stringify(exhibitions)}</p>
 						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
 					</TabsContent>
 
@@ -77,7 +76,7 @@ export const ExhibitionDetailsPage = () => {
 					</TabsContent>
 				</Tabs>
 
-				<p className="p-2 break-words border rounded">
+				<p className="p-3 my-5 break-words border rounded">
 					{JSON.stringify(exhibitions?.exhibitions?.find(exhibition => parseInt(exhibition_id) === exhibition.id))}
 				</p>
 			</main>
@@ -92,7 +91,7 @@ export const AddSlotsForm = ({ exhibition_id }) => {
 	const formRef = useRef(null);
 	const [exhibitionDates, setExhibitionDates] = useState(null);
 	const [registrationDates, setRegistrationDates] = useState(null);
-	const [confirmSubmission, setConfirmSubmission] = useState(false);
+	const [confirmSubmission, setConfirmSubmission] = useState(true);
 	const [slotsData, setSlotsData] = useState({});
 	const [polulateSampleData, setPolulateSampleData] = useState(false);
 
@@ -140,9 +139,8 @@ export const AddSlotsForm = ({ exhibition_id }) => {
 		}
 
 		toast({
-			title: 'Slots added successfully',
-			description: ` Slots added successfully. You will be redirected to the exhibition page shortly. Please navigate to the exhibition page if you are not redirected automatically and complete all the required steps.
-			Data: ${JSON.stringify(data)}`,
+			title: `Slot ${data[0].slot} added successfully`,
+			description: ` Slots added successfully. You will be redirected to the exhibition page shortly. Please navigate to the exhibition page if you are not redirected automatically and complete all the required steps.`,
 			variant: 'success',
 		});
 	};
@@ -154,7 +152,7 @@ export const AddSlotsForm = ({ exhibition_id }) => {
 		console.log(data);
 
 		// check if all the required fields are set or not
-		if (!data.slot || !data.description) {
+		if (!data.slot || !data.status || !data.length || !data.width) {
 			toast({
 				title: 'Required fields not set',
 				description: 'Please set all the required fields to continue',
@@ -181,7 +179,7 @@ export const AddSlotsForm = ({ exhibition_id }) => {
 			{exhibitionDates && JSON.stringify(exhibitionDates)}
 			{registrationDates && JSON.stringify(registrationDates)}
 
-			<form ref={formRef} className="container flex flex-col w-full max-w-4xl gap-5 px-3 py-3 my-2 bg-black/5 rounded-xl">
+			<form ref={formRef} className="container flex flex-col w-full max-w-4xl gap-5 px-3 py-3 my-2 bg-black/5 backdrop-blur-3xl rounded-xl">
 				<div className="flex flex-col w-full gap-2">
 					<Label htmlFor="slot" className="pl-1">
 						Slot

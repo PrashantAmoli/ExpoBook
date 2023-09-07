@@ -51,9 +51,19 @@ export const Links = [
 		info: 'Exhibitions page',
 	},
 	{
+		name: 'Embed',
+		href: '/embed',
+		info: 'Embed page',
+	},
+	{
 		name: 'Demo',
 		href: '/demo',
 		info: 'Demo page',
+	},
+	{
+		name: 'Embed Demo',
+		href: '/demo/embed',
+		info: 'Embed Demo page',
 	},
 	{
 		name: 'Test',
