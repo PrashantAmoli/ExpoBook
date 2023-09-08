@@ -2,6 +2,9 @@ import { Transition } from '@headlessui/react';
 import { Fragment, Suspense, useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 
+const TallyDemoLinkPersonal = 'https://tally.so/embed/wvrkGD?hideTitle=1&transparentBackground=1&dynamicHeight=0';
+const TallyDemoLinkBusiness = 'https://tally.so/embed/mO4rA7?hideTitle=1&transparentBackground=1&dynamicHeight=0';
+
 export default function Booking({ slot }) {
 	const [confirmSlot, setConfirmSlot] = useState(false);
 
@@ -48,7 +51,7 @@ export default function Booking({ slot }) {
 						<div className="flex flex-col items-center justify-center w-full h-full py-2 sm:py-3">
 							<Suspense fallback={<div>Loading...</div>}>
 								<iframe
-									data-tally-src="https://tally.so/embed/wvrkGD?hideTitle=1&transparentBackground=1&dynamicHeight=0"
+									data-tally-src={TallyDemoLinkBusiness || TallyDemoLinkPersonal}
 									loading="eager"
 									width="100%"
 									height="900"

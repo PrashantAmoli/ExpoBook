@@ -7,6 +7,8 @@ import { ToastAction } from './ui/toast';
 import { useToast } from './ui/use-toast';
 import { ScrollArea } from './ui/scroll-area';
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 // const data = [
 // 	{
@@ -71,26 +73,26 @@ import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
 // 	},
 // ];
 
-export default function Stadium() {
+export default function Stadium({ data }) {
 	return (
 		<>
-			<SVG />
+			<SVG data={data} />
 		</>
 	);
 }
 
-export function SVG() {
+export function SVG({ data }) {
 	const svgRef = useRef(null);
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [slot, setSlot] = useState('1');
-	const { slots: data } = useMovies();
+	// const { slots: data } = useMovies();
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const { toast } = useToast();
 
 	useEffect(() => {
 		const anchors = svgRef.current.querySelectorAll('a');
-		
+
 		anchors.forEach(a => {
 			a.classList.add('hover:bg-red-500/50');
 			a.classList.add('relative');
@@ -98,19 +100,17 @@ export function SVG() {
 			a.setAttribute('target', '');
 			a.setAttribute('href', '#');
 
-			const red = 
-			'darkred';
-			const dark_red = 
-			'red';
+			const red = 'darkred';
+			const dark_red = 'red';
 			const green = '#00ff00';
 			const dark_green = '#ffcc00';
 			const gray = '#f1f1f1';
 
 			let color;
 			const slot_id = a.querySelector('text').innerHTML;
-			
+
 			// if slot is not available
-			if (!data.find(d => d.slot === slot_id).available) {
+			if (data.find(d => d.slot === slot_id)?.booked) {
 				color = red;
 			} else {
 				color = green;
@@ -131,14 +131,14 @@ export function SVG() {
 				setSlot(slot_id);
 				a.setAttribute('href', `#${slot_id}`);
 
-				if (!data.find(d => d.slot === slot_id).available) {
+				if (data.find(d => d.slot === slot_id)?.booked) {
 					// if slot is not available
 					const notAvailableToast = () =>
 						toast({
 							title: 'Slot not available ',
 							description: 'Contact support to see if there is any cancellation',
 							action: <ToastAction altText="Goto schedule to undo">Okay</ToastAction>,
-							variant: 'destructive'
+							variant: 'destructive',
 						});
 					notAvailableToast();
 				} else {
@@ -151,9 +151,9 @@ export function SVG() {
 
 			a.addEventListener('mouseenter', () => {
 				const slot_id = a.querySelector('text').innerHTML;
-				
+
 				// if slot is not available
-				if (!data.find(d => d.slot === slot_id).available) {
+				if (data.find(d => d.slot === slot_id)?.booked) {
 					color = dark_red;
 				} else {
 					color = dark_green;
@@ -169,9 +169,9 @@ export function SVG() {
 			});
 			a.addEventListener('mouseleave', () => {
 				const slot_id = a.querySelector('text').innerHTML;
-	
+
 				// if slot is not available
-				if (!data.find(d => d.slot === slot_id).available) {
+				if (data.find(d => d.slot === slot_id)?.booked) {
 					color = red;
 				} else {
 					color = green;

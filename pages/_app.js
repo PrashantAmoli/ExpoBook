@@ -1,38 +1,33 @@
-import { Input } from '@/components/ui/input';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
-import { MoviesProvider } from '@/context/context';
 import '@/styles/globals.css';
-import { useState } from 'react';
+import { MoviesProvider } from '@/context/context';
+import ClerkWrapper from '@/components/auth';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider, useTheme } from 'next-themes';
+import { Switch } from '@/components/ui/switch';
+import { queryClient } from '@/components/ReactQuery';
+import dynamic from 'next/dynamic';
+const CrispChatWidget = dynamic(() => import('@/components/CrispChatWidget'), { ssr: false });
 
 export default function App({ Component, pageProps }) {
-	const [password, setPassword] = useState('');
 	return (
 		<>
-			<MoviesProvider>
-				{password.includes('expo') ? (
-					<>
-						<Component {...pageProps} />
-						<Toaster />
-					</>
-				) : (
-					<div className="fixed inset-0 z-30 flex items-center justify-center w-screen h-screen">
-						{/* <input
-							type="password"
-							value={password}
-							onChange={e => setPassword(e.target.value)}
-							className="p-2 text-2xl border-2 border-gray-300 rounded-md outline-none focus:border-gray-500"
-						/> */}
-						<Input
-							type="password"
-							placeholder="Enter Passcode"
-							value={password}
-							onChange={e => setPassword(e.target.value.toLowerCase())}
-							className="max-w-sm py-5 m-2"
-							autoFocus
-						/>
-					</div>
-				)}
-			</MoviesProvider>
+			<ThemeProvider attribute="class" enableSystem={true} defaultTheme="light">
+				<ClerkWrapper>
+					<QueryClientProvider client={queryClient}>
+						<MoviesProvider>
+							<Component {...pageProps} />
+
+							<CrispChatWidget />
+
+							<Toaster />
+
+							<ReactQueryDevtools initialIsOpen={false} />
+						</MoviesProvider>
+					</QueryClientProvider>
+				</ClerkWrapper>
+			</ThemeProvider>
 		</>
 	);
 }
