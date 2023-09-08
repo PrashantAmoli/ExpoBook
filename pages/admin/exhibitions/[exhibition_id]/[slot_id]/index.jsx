@@ -1,8 +1,10 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StripeCheckout, { CheckoutForm } from '@/components/booking/StripeCheckout';
+import { useEffect } from 'react';
+import { supabase } from '@/utils/supabase';
 
 export default function SlotDetailsPage() {
 	const router = useRouter();
@@ -16,14 +18,31 @@ export default function SlotDetailsPage() {
 	const allSlotData = useQueryClient()?.getQueryData(['slots', exhibition_id]);
 	const slotData = allSlotData?.find(slot => slot.slot == slot_id);
 
+	const {
+		data: inquiries,
+		isLoading,
+		error,
+	} = useQuery({
+		queryKey: ['inquiries', exhibition_id, slot_id],
+		queryFn: async () => {
+			const { data, error } = await supabase.from('inquiries').select('*').match({ slot: slot_id, exhibition_id: exhibition_id });
+			if (error) {
+				console.error(error);
+				return;
+			}
+			console.log('inquiries', data);
+			return data;
+		},
+	});
+
 	return (
 		<>
 			<Head>
 				<title>Slot {slot_id}</title>
 			</Head>
 
-			<main className="w-full min-h-screen">
-				<Tabs defaultValue="details" className="container w-full mt-2">
+			<main className="w-full min-h-screen px-2">
+				<Tabs defaultValue="details" className="w-full mx-auto mt-2">
 					<TabsList className="w-full">
 						<TabsTrigger value="details" className="w-full capitalize">
 							Details
@@ -69,6 +88,14 @@ export default function SlotDetailsPage() {
 								</span>
 							</div>
 						</section>
+
+						{isLoading ? (
+							<div className="text-center">Loading Inquries...</div>
+						) : (
+							<>
+								<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Inquiries: {JSON.stringify(inquiries)}</div>
+							</>
+						)}
 
 						<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Exhibition Data: {JSON.stringify(exhibition)}</div>
 
