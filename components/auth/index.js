@@ -29,8 +29,6 @@ const Navbar = ({ children }) => {
 					<DropdownMenuWrapper />
 
 					<div className="flex gap-1">
-						{children}
-
 						<SignedIn>
 							<OrganizationSwitcher
 								appearance={{
@@ -58,6 +56,13 @@ const Navbar = ({ children }) => {
 					</div>
 				</div>
 			</nav>
+
+			{children}
+
+			{/* footer */}
+			{/* <footer className="fixed bottom-0 flex flex-col items-center justify-center w-full h-12 py-3 mt-10 text-sm -z-10">
+				2023 © EaseMyExpo | All Rights Reserved
+			</footer> */}
 			{/* <p className="break-words">{JSON.stringify(userData?.user?.publicMetadata?.role)}</p> */}
 		</>
 	);
@@ -70,20 +75,21 @@ export default function ClerkWrapper({ children }) {
 
 	return (
 		<ClerkProvider>
-			<Navbar />
-			{isPublicPage ? (
-				<>{children}</>
-			) : (
-				<>
-					<SignedIn>
-						<div className="relative w-full">{children}</div>
-					</SignedIn>
+			<Navbar>
+				{isPublicPage ? (
+					<>{children}</>
+				) : (
+					<>
+						<SignedIn>
+							<div className="relative w-full">{children}</div>
+						</SignedIn>
 
-					<SignedOut>
-						<div className="relative">{children}</div>
-					</SignedOut>
-				</>
-			)}
+						<SignedOut>
+							<div className="relative">{children}</div>
+						</SignedOut>
+					</>
+				)}
+			</Navbar>
 		</ClerkProvider>
 	);
 }

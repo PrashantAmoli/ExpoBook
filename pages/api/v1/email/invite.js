@@ -25,6 +25,15 @@ const SAMPLE_RECORD = {
 export default async function handler(req, res) {
 	const { record } = req.body;
 
+	// get secret from header
+	const secret = req.headers['secret'];
+	const SECRECT = process.env.SECRET || '9318899447';
+
+	// check if secret is valid
+	if (secret !== SECRECT) {
+		return res.status(401).json({ message: 'Unauthorized' });
+	}
+
 	if (!record) return res.status(400).json({ message: 'Record not found' });
 
 	const { email, first_name, last_name, slot, company } = record;
