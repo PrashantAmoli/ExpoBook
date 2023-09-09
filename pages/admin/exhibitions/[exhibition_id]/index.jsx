@@ -60,25 +60,29 @@ export const ExhibitionDetailsPage = () => {
 						<TabsTrigger value="form" className="w-full">
 							Form
 						</TabsTrigger>
+						<TabsTrigger value="json" className="uppercase">
+							JSON
+						</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="table">
 						<h2 className="mt-2 text-xl font-bold text-center">Exhibition {exhibition_id}</h2>
 
 						<SlotsTable data={slotsData} />
-
-						<p className="p-2 break-words border rounded">{JSON.stringify(exhibitions)}</p>
-						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
 					</TabsContent>
 
 					<TabsContent value="form">
 						<AddSlotsForm exhibition_id={exhibition_id} />
 					</TabsContent>
-				</Tabs>
 
-				<p className="p-3 my-5 break-words border rounded">
-					{JSON.stringify(exhibitions?.exhibitions?.find(exhibition => parseInt(exhibition_id) === exhibition.id))}
-				</p>
+					<TabsContent value="json">
+						<p className="p-2 break-words border rounded">{JSON.stringify(exhibitions)}</p>
+						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
+						<p className="p-3 my-5 break-words border rounded">
+							{JSON.stringify(exhibitions?.exhibitions?.find(exhibition => parseInt(exhibition_id) === exhibition.id))}
+						</p>
+					</TabsContent>
+				</Tabs>
 			</main>
 		</>
 	);

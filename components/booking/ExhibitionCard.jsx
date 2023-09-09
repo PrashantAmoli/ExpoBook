@@ -16,26 +16,32 @@ export const ExhibitionCard = ({ exhibition }) => {
 					<CardDescription>{exhibition.description}</CardDescription>
 
 					<div className="flex flex-col justify-between w-full gap-1 my-2">
-						<Label className="w-full text-sm">Exhibition Start & End Date</Label>
+						<Label className="w-full mt-1 text-sm">Exhibition Start & End Date</Label>
 						<div className="text-xs text-gray-500">
-							<time dateTime={exhibition.exhibition_start}>{exhibition.exhibition_start}</time> to{' '}
-							<time dateTime={exhibition.exhibition_end}>{exhibition.exhibition_end}</time>
+							<time dateTime={exhibition.exhibition_start}>{exhibition.exhibition_start.slice(0, 10)}</time> to{' '}
+							<time dateTime={exhibition.exhibition_end}>{exhibition.exhibition_end.slice(0, 10)}</time>
 						</div>
 
-						<Label className="w-full text-sm">Registration Start & End Date</Label>
+						<Label className="w-full mt-1 text-sm">Registration Start & End Date</Label>
 						<div className="text-xs text-gray-500">
-							<time dateTime={exhibition.registration_start}>{exhibition.registration_start}</time> to{' '}
-							<time dateTime={exhibition.registration_end}>{exhibition.registration_end}</time>
+							<time dateTime={exhibition.registration_start}>{exhibition.registration_start.slice(0, 10)}</time> to{' '}
+							<time dateTime={exhibition.registration_end}>{exhibition.registration_end.slice(0, 10)}</time>
 						</div>
 
-						<Label className="w-full text-sm">Created At Date</Label>
-						<div className="text-sm text-gray-500">
-							<time dateTime={exhibition.created_at}>{exhibition.created_at}</time>
-						</div>
+						<div className="grid grid-cols-3">
+							<Label className="w-full mt-1 text-sm">Created At Date</Label>
+							<div className="col-span-2 text-sm text-gray-500">
+								<time dateTime={exhibition.created_at}>
+									{exhibition.created_at.slice(0, 10)} {exhibition.created_at.slice(12, 19)}
+								</time>
+							</div>
 
-						<Label className="w-full text-sm">Updated At Date</Label>
-						<div className="text-sm text-gray-500">
-							<time dateTime={exhibition.updated_at}>{exhibition.updated_at}</time>
+							<Label className="w-full mt-1 text-sm">Updated At Date</Label>
+							<div className="col-span-2 text-sm text-gray-500">
+								<time dateTime={exhibition.updated_at}>
+									{exhibition.updated_at.slice(0, 10)} {exhibition.updated_at.slice(12, 19)}
+								</time>
+							</div>
 						</div>
 					</div>
 				</CardContent>

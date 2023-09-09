@@ -11,11 +11,6 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const Links = [
 	{
-		name: 'Super Admin',
-		href: '/superadmin',
-		info: 'Super Admin page',
-	},
-	{
 		name: 'Admin',
 		href: '/admin',
 		info: 'Admin page',
@@ -69,6 +64,11 @@ export const Links = [
 		name: 'Test',
 		href: '/tests',
 		info: 'Test layout page',
+	},
+	{
+		name: 'Emails',
+		href: '/admin/emails',
+		info: 'Email Templates Demo Page',
 	},
 ];
 
