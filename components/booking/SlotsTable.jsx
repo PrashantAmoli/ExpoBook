@@ -299,6 +299,10 @@ export default function SlotsTable({ data = [] }) {
 		},
 	});
 
+	React.useEffect(() => {
+		table.setPageSize(50);
+	}, [table]);
+
 	return (
 		<div className="w-full">
 			<div className="flex items-center gap-2 py-4">
@@ -406,9 +410,10 @@ export default function SlotsTable({ data = [] }) {
 				</div>
 
 				<div className="flex space-x-2">
-					<div className="flex">
+					<div className="flex items-center gap-2">
 						Rows per page
 						<Select
+							defaultValue={50}
 							onValueChange={e => {
 								table.setPageSize(e);
 							}}
@@ -417,7 +422,7 @@ export default function SlotsTable({ data = [] }) {
 								<SelectValue placeholder="10" />
 							</SelectTrigger>
 
-							<SelectContent defaultValue={300}>
+							<SelectContent>
 								<SelectGroup>
 									<SelectLabel>No. of rows</SelectLabel>
 									<SelectItem value={10}>10</SelectItem>

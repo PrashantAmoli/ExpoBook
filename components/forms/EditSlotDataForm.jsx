@@ -7,6 +7,7 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { supabase } from '@/utils/supabase';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
+import { Separator } from '../ui/separator';
 
 export const EditSlotDataForm = ({ slotData, exhibition }) => {
 	const [directBooking, setDirectBooking] = useState(slotData?.direct_booking || false);
@@ -79,8 +80,10 @@ export const EditSlotDataForm = ({ slotData, exhibition }) => {
 
 	return (
 		<>
-			<section className="container max-w-2xl p-3 border rounded-xl">
+			<section className="container max-w-2xl p-3 border rounded-xl backdrop-blur-3xl">
 				<h2 className="text-xl font-bold text-center">Edit Slot {slotData?.slot}</h2>
+
+				<Separator className="w-10/12 mx-auto my-2" />
 
 				<form action="" className="container flex flex-col max-w-xl gap-5 py-4" onSubmit={e => handleSubmit(e)}>
 					<div className="grid items-center grid-cols-5 gap-3">

@@ -5,8 +5,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StripeCheckout, { CheckoutForm } from '@/components/booking/StripeCheckout';
 import { useEffect } from 'react';
 import { supabase } from '@/utils/supabase';
+import EditSlotDataForm from '@/components/forms/EditSlotDataForm';
+import SuperAdmin from '@/components/auth/SuperAdmin';
+import { InquiryCard } from '@/components/booking/InquiryCard';
 
 export default function SlotDetailsPage() {
+	const router = useRouter();
+	const { exhibition_id, slot_id } = router.query;
+
+	return (
+		<>
+			<Head>
+				<title>Slot {slot_id}</title>
+			</Head>
+
+			<main className="w-full min-h-screen px-2">
+				<SuperAdmin showMessage>
+					<SlotDetails />
+				</SuperAdmin>
+			</main>
+		</>
+	);
+}
+
+export function SlotDetails() {
 	const router = useRouter();
 	const { exhibition_id, slot_id } = router.query;
 
@@ -37,76 +59,88 @@ export default function SlotDetailsPage() {
 
 	return (
 		<>
-			<Head>
-				<title>Slot {slot_id}</title>
-			</Head>
+			<Tabs defaultValue="details" className="w-full mx-auto mt-2">
+				<TabsList className="w-full">
+					<TabsTrigger value="details" className="w-full capitalize">
+						Details
+					</TabsTrigger>
+					<TabsTrigger value="edit" className="w-full capitalize">
+						Edit
+					</TabsTrigger>
+					<TabsTrigger value="pay" className="w-full capitalize">
+						pay
+					</TabsTrigger>
+					<TabsTrigger value="json" className="uppercase">
+						json
+					</TabsTrigger>
+				</TabsList>
 
-			<main className="w-full min-h-screen px-2">
-				<Tabs defaultValue="details" className="w-full mx-auto mt-2">
-					<TabsList className="w-full">
-						<TabsTrigger value="details" className="w-full capitalize">
-							Details
-						</TabsTrigger>
-						<TabsTrigger value="pay" className="w-full">
-							pay
-						</TabsTrigger>
-					</TabsList>
+				<TabsContent value="details" className="w-full">
+					<section className="flex flex-col gap-1">
+						<div className="flex flex-col w-full gap-1 md:gap-5 md:flex-row">
+							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition ID:</h4>
 
-					<TabsContent value="details" className="w-full">
-						<section className="flex flex-col gap-1">
-							<div className="flex flex-col w-full gap-1 md:gap-5 md:flex-row">
-								<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition ID:</h4>
+							<span>{exhibition ? exhibition?.id : ''}</span>
+						</div>
 
-								<span>{exhibition ? exhibition?.id : ''}</span>
-							</div>
+						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
+							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition Title:</h4>
 
-							<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
-								<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition Title:</h4>
+							<span>{exhibition ? exhibition?.title : ''}</span>
+						</div>
 
-								<span>{exhibition ? exhibition?.title : ''}</span>
-							</div>
+						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
+							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Slot:</h4>
 
-							<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
-								<h4 className="font-semibold tracking-tight text-md scroll-m-20">Slot:</h4>
+							<span>{slotData?.slot ? slotData?.slot : ''}</span>
+						</div>
 
-								<span>{slotData?.slot ? slotData?.slot : ''}</span>
-							</div>
+						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
+							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Booked:</h4>
 
-							<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
-								<h4 className="font-semibold tracking-tight text-md scroll-m-20">Booked:</h4>
+							<span>{slotData?.booked ? 'Yes' : 'No'}</span>
+						</div>
 
-								<span>{slotData?.booked ? 'Yes' : 'No'}</span>
-							</div>
+						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
+							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Size:</h4>
 
-							<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
-								<h4 className="font-semibold tracking-tight text-md scroll-m-20">Size:</h4>
+							<span>
+								{slotData?.length && slotData?.width
+									? `${slotData?.length}X${slotData?.width} (${parseInt(slotData?.length) * parseInt(slotData?.width)})`
+									: '_'}
+							</span>
+						</div>
 
-								<span>
-									{slotData?.length && slotData?.width
-										? `${slotData?.length}X${slotData?.width} (${parseInt(slotData?.length) * parseInt(slotData?.width)})`
-										: '_'}
-								</span>
-							</div>
-						</section>
+						<div className="grid grid-cols-1 gap-5 sm:p-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
+							{inquiries?.map(inquiry => (
+								<InquiryCard inquiry={inquiry} key={inquiry.id} />
+							))}
+						</div>
+					</section>
+				</TabsContent>
 
-						{isLoading ? (
-							<div className="text-center">Loading Inquries...</div>
-						) : (
-							<>
-								<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Inquiries: {JSON.stringify(inquiries)}</div>
-							</>
-						)}
+				<TabsContent value="json" className="w-full">
+					{isLoading ? (
+						<div className="text-center">Loading Inquries...</div>
+					) : (
+						<>
+							<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Inquiries: {JSON.stringify(inquiries)}</div>
+						</>
+					)}
 
-						<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Exhibition Data: {JSON.stringify(exhibition)}</div>
+					<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Exhibition Data: {JSON.stringify(exhibition)}</div>
 
-						<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Slot Data: {JSON.stringify(slotData)}</div>
-					</TabsContent>
+					<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Slot Data: {JSON.stringify(slotData)}</div>
+				</TabsContent>
 
-					<TabsContent value="pay" className="w-full">
-						<StripeCheckout />
-					</TabsContent>
-				</Tabs>
-			</main>
+				<TabsContent value="edit" className="w-full">
+					<EditSlotDataForm slotData={slotData} exhibition={exhibition} />
+				</TabsContent>
+
+				<TabsContent value="pay" className="w-full">
+					<StripeCheckout />
+				</TabsContent>
+			</Tabs>
 		</>
 	);
 }

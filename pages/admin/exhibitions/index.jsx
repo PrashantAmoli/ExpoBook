@@ -58,6 +58,10 @@ export default function AdminPage() {
 							<TabsTrigger value="table" className="w-full">
 								Table
 							</TabsTrigger>
+
+							<TabsTrigger value="json" className="uppercase">
+								json
+							</TabsTrigger>
 						</TabsList>
 						<Link href="/admin/exhibitions/new">
 							<Button className="m-1">Create New</Button>
@@ -72,10 +76,13 @@ export default function AdminPage() {
 								))}
 							</div>
 						</TabsContent>
-						<TabsContent value="table">CRUD Table of all exhibitions here</TabsContent>
-					</Tabs>
 
-					<p className="break-words">{JSON.stringify(data)}</p>
+						<TabsContent value="table">CRUD Table of all exhibitions here</TabsContent>
+
+						<TabsContent value="json">
+							<p className="break-words">{JSON.stringify(data)}</p>
+						</TabsContent>
+					</Tabs>
 				</SuperAdmin>
 			</main>
 		</>
