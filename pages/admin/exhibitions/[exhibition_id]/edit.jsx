@@ -10,6 +10,8 @@ export const ExhibitionEditPage = () => {
 	const exhibitions = useQueryClient()?.getQueryData(['exhibitions']);
 	const exhibition = exhibitions?.find(exhibition => exhibition.id == exhibition_id);
 
+	console.log(exhibition);
+
 	return (
 		<>
 			<Head>
@@ -22,8 +24,6 @@ export const ExhibitionEditPage = () => {
 				</h2>
 
 				<EditExhibitionForm exhibition={exhibition} />
-
-				<p className="p-3 my-3 border w-full-break-words">{JSON.stringify(exhibition, null, 2)}</p>
 			</main>
 		</>
 	);
