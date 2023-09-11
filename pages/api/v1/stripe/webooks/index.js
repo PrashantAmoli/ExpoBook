@@ -3,7 +3,7 @@ import { stripe } from '@/utils/stripe';
 export default async function handler(req, res) {
 	const sig = req.headers['stripe-signature'];
 	// convert the raw body to text/buffer then pass it to stripe.webhooks.constructEvent
-	const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+	const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_SECRET_KEY);
 
 	/* 
 	TODO: Handle all necessary payment_intent events including:
@@ -15,6 +15,8 @@ export default async function handler(req, res) {
 
 	TODO: Store the payment_intent id in the transactions table in the database and add more required columns to the table
 	*/
+
+	let receivedEvent;
 
 	switch (event.type) {
 		case 'checkout.session.completed':

@@ -8,6 +8,7 @@ module.exports = {
 			padding: '8px',
 			screens: {
 				'2xl': '1400px',
+				xs: '320px',
 			},
 		},
 		extend: {

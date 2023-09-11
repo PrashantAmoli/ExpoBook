@@ -3,7 +3,9 @@ import Stripe from 'stripe';
 export default async function StripeCheckoutHandler(req, res) {
 	// const { id, amount } = req.body;
 
-	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+		apiVersion: '2020-08-27',
+	});
 
 	try {
 		const session = await stripe.checkout.sessions.create({
