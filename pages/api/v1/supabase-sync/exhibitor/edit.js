@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   try {
     switch (evt.type) {
       case "user.updated":
-        const users = await supabase.from("exhibitors").select().eq("id", evt.data.id);
+        const users = await supabase.from("exhibitors").select().eq("email", evt.data.email_addresses[0].email_address);
 
         if (users.data.length) {
           await supabase
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
               email: evt.data.email_addresses[0].email_address,
               first_name: evt.data.first_name,
               last_name: evt.data.last_name,
-              username: evt.data.last_name,
+              username: evt.data.username,
               clerk_data: evt.data,
               updated_at: new Date(),
             })
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
             email: evt.data.email_addresses[0].email_address,
             first_name: evt.data.first_name,
             last_name: evt.data.last_name,
-            username: evt.data.last_name,
+            username: evt.data.username,
             clerk_data: evt.data,
             role: "exhibitor",
           })
