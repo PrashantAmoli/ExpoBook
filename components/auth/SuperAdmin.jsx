@@ -1,7 +1,11 @@
-import { useUser } from '@clerk/nextjs';
+import { SignedIn, useAuth, useUser } from '@clerk/nextjs';
+import Loading from '../views/Loading';
 
 export const SuperAdmin = ({ children, showMessage = false }) => {
 	const userData = useUser();
+	const authData = useAuth();
+
+	if (!authData?.isLoaded) return <Loading />;
 
 	if (userData?.user?.publicMetadata?.role !== 'superadmin') {
 		return (
@@ -18,7 +22,11 @@ export const SuperAdmin = ({ children, showMessage = false }) => {
 		);
 	}
 
-	return <>{children}</>;
+	return (
+		<>
+			<SignedIn>{children}</SignedIn>
+		</>
+	);
 };
 
 export default SuperAdmin;

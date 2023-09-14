@@ -79,7 +79,7 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'slot',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Slot
 						<CaretSortIcon className="w-4 h-4" />
 					</Button>
@@ -91,17 +91,33 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'description',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Description
 						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="w-40 truncate">{row.getValue('description')}</div>,
+			cell: ({ row }) => <div className="truncate w-36">{row.getValue('description')}</div>,
+		},
+		{
+			accessorKey: 'exhibitions',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Exhibition
+						<CaretSortIcon className="w-4 h-4 ml-1" />
+					</Button>
+				);
+			},
+			cell: ({ row }) => (
+				<div className="truncate">
+					#{row.getValue('exhibitions')?.id}. {row.getValue('exhibitions')?.title}
+				</div>
+			),
 		},
 		{
 			accessorKey: 'open',
-			header: 'Open',
+			header: '',
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
@@ -111,6 +127,8 @@ export default function SlotsTable({ data = [] }) {
 					</div>
 				);
 			},
+			enableHiding: false,
+			enableSorting: false,
 		},
 		{
 			accessorKey: 'status',
@@ -125,7 +143,13 @@ export default function SlotsTable({ data = [] }) {
 		},
 		{
 			accessorKey: 'direct_booking',
-			header: 'Direct Booking',
+			header: ({ column }) => {
+				return (
+					<Button variant="ghost" className="px-1 w-max">
+						Direct Booking
+					</Button>
+				);
+			},
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
@@ -151,7 +175,7 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'length',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Length
 						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
@@ -163,7 +187,7 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'width',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Width
 						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
@@ -175,7 +199,7 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'size',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Size
 						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
@@ -191,7 +215,7 @@ export default function SlotsTable({ data = [] }) {
 			accessorKey: 'exhibition_id',
 			header: ({ column }) => {
 				return (
-					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button variant="ghost" className="px-2 w-max" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 						Exhibition ID
 						<CaretSortIcon className="w-4 h-4 ml-1" />
 					</Button>
@@ -199,7 +223,6 @@ export default function SlotsTable({ data = [] }) {
 			},
 			cell: ({ row }) => <div className="text-center lowercase">{row.getValue('exhibition_id')}</div>,
 		},
-
 		{
 			id: 'actions',
 			enableHiding: false,
@@ -210,7 +233,7 @@ export default function SlotsTable({ data = [] }) {
 				return (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" className="w-8 h-8 p-0 rounded-full hover:scale-105">
+							<Button variant="ghost" className="inline-flex w-8 h-8 p-0 rounded-full hover:scale-105">
 								<span className="sr-only">Open menu</span>
 								<DotsHorizontalIcon className="w-5 h-5" />
 							</Button>

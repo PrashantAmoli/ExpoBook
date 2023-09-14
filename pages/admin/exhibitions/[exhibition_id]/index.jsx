@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import HoverCardWrapper from '@/components/elements/HoverCardWrapper';
 import { add } from 'date-fns';
 import AddSlotsForm from '@/components/forms/AddSlotForm';
+import Loading from '@/components/views/Loading';
 
 export const ExhibitionDetailsPage = () => {
 	const router = useRouter();
@@ -25,28 +26,32 @@ export const ExhibitionDetailsPage = () => {
 	const exhibitions = useQueryClient()?.getQueryData(['exhibitions']);
 
 	const {
-		data: slotsData,
-		isLoading,
+		data: exhibitionData,
 		error,
+		isLoading,
 	} = useQuery({
-		queryKey: ['slots', exhibition_id],
+		queryKey: ['exhibition', exhibition_id],
 		queryFn: async () => {
-			const { data, error } = await supabase.from('slots').select('*').match({ exhibition_id: exhibition_id });
+			const { data, error } = await supabase
+				.from('slots')
+				.select(
+					`
+					*,
+					exhibitions (*)
+					`
+				)
+				.match({ exhibition_id: exhibition_id });
 			if (error) console.log(error);
 			return data;
 		},
 	});
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
-
-	if (exhibitions?.exhibitions?.length === 0) {
-		return <div>not found</div>;
+		return <Loading title="error" description={error.message} />;
 	}
 
 	return (
@@ -72,7 +77,7 @@ export const ExhibitionDetailsPage = () => {
 					<TabsContent value="table">
 						<h2 className="mt-2 text-xl font-bold text-center">Exhibition {exhibition_id}</h2>
 
-						<SlotsTable data={slotsData} />
+						<SlotsTable data={exhibitionData} />
 					</TabsContent>
 
 					<TabsContent value="form">
@@ -80,11 +85,8 @@ export const ExhibitionDetailsPage = () => {
 					</TabsContent>
 
 					<TabsContent value="json">
-						<p className="p-2 break-words border rounded">{JSON.stringify(exhibitions)}</p>
-						<p className="p-2 break-words border rounded">{JSON.stringify(slotsData)}</p>
-						<p className="p-3 my-5 break-words border rounded">
-							{JSON.stringify(exhibitions?.exhibitions?.find(exhibition => parseInt(exhibition_id) === exhibition.id))}
-						</p>
+						<p className="p-2 m-2 break-words border rounded">{JSON.stringify(exhibitions)}</p>
+						<p className="p-2 m-2 break-words border rounded">{JSON.stringify(exhibitionData)}</p>
 					</TabsContent>
 				</Tabs>
 			</main>

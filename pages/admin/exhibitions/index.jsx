@@ -7,38 +7,33 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import { ExhibitionCard } from '@/components/booking/ExhibitionCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SuperAdmin from '@/components/auth/SuperAdmin';
+import Loading from '@/components/views/Loading';
 
-const exhibitions = [
-	{
-		id: 1,
-		name: 'Exhibition 1',
-		description: 'This is the first exhibition',
-		startDate: '2021-01-01',
-		endDate: '2021-01-31',
-		createdAt: '2021-01-01',
-		updatedAt: '2021-01-01',
-		status: 'active',
-		slots: 200,
-		availableSlots: 100,
-	},
-];
+export default function AdminExhibitionsPageWrapper() {
+	return (
+		<>
+			<SuperAdmin showMessage>
+				<AdminExhibitionsPage />
+			</SuperAdmin>
+		</>
+	);
+}
 
-export default function AdminPage() {
+export function AdminExhibitionsPage() {
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['exhibitions'],
 		queryFn: async () => {
 			const { data } = await axios.get('/api/v1/admin/exhibitions');
-			console.log(data);
 			return data?.exhibitions;
 		},
 	});
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	if (error) {
-		return <div>Error: {error.message}</div>;
+		return <Loading title="error" description={error.message} />;
 	}
 
 	return (
