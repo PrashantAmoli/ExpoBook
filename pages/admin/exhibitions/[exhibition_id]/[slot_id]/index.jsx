@@ -32,12 +32,7 @@ export function SlotDetails() {
 	const router = useRouter();
 	const { exhibition_id, slot_id } = router.query;
 
-	const exhibitions = useQueryClient()?.getQueryData(['exhibitions']);
-	console.log('exhibitions', exhibitions);
-	const exhibition = exhibitions?.find(exhibition => exhibition.id == exhibition_id);
-	console.log('exhibition', exhibition);
-
-	const allSlotData = useQueryClient()?.getQueryData(['slots', exhibition_id]);
+	const allSlotData = useQueryClient()?.getQueryData(['exhibition', exhibition_id]);
 	const slotData = allSlotData?.find(slot => slot.slot == slot_id);
 
 	const {
@@ -80,13 +75,13 @@ export function SlotDetails() {
 						<div className="flex flex-col w-full gap-1 md:gap-5 md:flex-row">
 							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition ID:</h4>
 
-							<span>{exhibition ? exhibition?.id : ''}</span>
+							<span>{slotData?.exhibitions?.id}</span>
 						</div>
 
 						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
 							<h4 className="font-semibold tracking-tight text-md scroll-m-20">Exhibition Title:</h4>
 
-							<span>{exhibition ? exhibition?.title : ''}</span>
+							<span>{slotData?.exhibitions?.title}</span>
 						</div>
 
 						<div className="flex flex-col gap-1 md:gap-5 md:flex-row">
@@ -128,13 +123,11 @@ export function SlotDetails() {
 						</>
 					)}
 
-					<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Exhibition Data: {JSON.stringify(exhibition)}</div>
-
-					<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Slot Data: {JSON.stringify(slotData)}</div>
+					<div className="w-11/12 p-3 mx-auto my-3 break-words border rounded-xl">Data: {JSON.stringify(slotData)}</div>
 				</TabsContent>
 
 				<TabsContent value="edit" className="w-full">
-					<EditSlotDataForm slotData={slotData} exhibition={exhibition} />
+					<EditSlotDataForm slotData={slotData} exhibition={slotData?.exhibitions} />
 				</TabsContent>
 
 				<TabsContent value="pay" className="w-full">
