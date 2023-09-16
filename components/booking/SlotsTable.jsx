@@ -172,6 +172,17 @@ export default function SlotsTable({ data = [] }) {
 			},
 		},
 		{
+			accessorKey: 'booked_by',
+			header: 'Booked By',
+			cell: ({ row }) => {
+				return (
+					<div className="flex gap-2">
+						<span className="text-xs">{row.getValue('booked_by') || '___________'}</span>
+					</div>
+				);
+			},
+		},
+		{
 			accessorKey: 'length',
 			header: ({ column }) => {
 				return (
