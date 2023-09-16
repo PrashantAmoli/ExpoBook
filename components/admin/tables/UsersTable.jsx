@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import useMovies from '@/context/context';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
@@ -47,7 +46,7 @@ const data = [
 ];
 
 export default function UsersAdminTable({ users, children, className, ...props }) {
-	const { slots: data, toggleSlot, updateMoviesList } = useMovies();
+	const data = [];
 
 	const [sorting, setSorting] = React.useState([]);
 	const [columnFilters, setColumnFilters] = React.useState();

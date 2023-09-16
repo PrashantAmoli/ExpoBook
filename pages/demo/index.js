@@ -1,5 +1,4 @@
 import MyTable from '@/components/MyTable';
-import Stadium from '@/components/Stadium';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/utils/supabase';
 import { useQuery } from '@tanstack/react-query';
@@ -46,9 +45,7 @@ export default function Demo() {
 					<section className="container flex items-center justify-center max-h-screen mx-auto pt-7 max-w-screen-2xl">
 						<MyTable data={data} />
 					</section>
-				) : (
-					<Stadium data={data} />
-				)}
+				) : null}
 			</main>
 		</>
 	);

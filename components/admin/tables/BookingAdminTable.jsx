@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import useMovies from '@/context/context';
 import { Switch } from '@components/ui/switch';
 
 const data = [
@@ -46,7 +45,7 @@ const data = [
 ];
 
 export default function BookingAdminTable() {
-	const { slots: data, toggleSlot, updateMoviesList } = useMovies();
+	const data = [];
 
 	const [sorting, setSorting] = React.useState([]);
 	const [columnFilters, setColumnFilters] = React.useState();
@@ -86,7 +85,7 @@ export default function BookingAdminTable() {
 			cell: ({ row }) => {
 				return (
 					<div className="flex gap-2">
-						<Switch checked={row.getValue('available')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} />
+						{/* <Switch checked={row.getValue('available')} onCheckedChange={() => toggleSlot({ slot: row.getValue('slot') })} /> */}
 						<span className="text-xs">{row.getValue('available') ? 'Available' : 'Booked'}</span>
 					</div>
 				);
