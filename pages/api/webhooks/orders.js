@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 		return;
 	}
 
-	const { type, record } = body;
+	const { type, record, old_record } = body;
 
 	switch (type) {
 		case 'DELETE':
@@ -22,12 +22,14 @@ export default async function handler(req, res) {
 					booked: false,
 					booked_by: null,
 				})
-				.eq('id', record?.slot_id);
+				.eq('id', old_record?.slot_id);
 
 			if (error) {
 				console.log('DELETE: ', error);
 				res.status(500).json({
-					message: `Slot id ${record.slot_id} of exhibition id ${record?.exhibtion_id} not updated on deleting order ${JSON.stringify(record)}`,
+					message: `Slot id ${old_record.slot_id} of exhibition id ${old_record?.exhibtion_id} not updated on deleting order ${JSON.stringify(
+						old_record
+					)}`,
 				});
 				return;
 			}
