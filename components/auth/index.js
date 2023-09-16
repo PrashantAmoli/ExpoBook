@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DropdownMenuWrapper from '../DropdownMenuWrapper';
+import { dark } from '@clerk/themes';
 
 const publicPages = ['/', '/sign-in/[[...index]]', '/sign-up/[[...index]]', '/admin', '/admin/orders', '/admin/users', '/embed', '/demo', '/tests'];
 
@@ -70,11 +71,24 @@ const Navbar = ({ children }) => {
 
 export default function ClerkWrapper({ children }) {
 	const { pathname } = useRouter();
+	const { theme, setTheme } = useTheme();
 
 	const isPublicPage = publicPages.includes(pathname);
 
 	return (
-		<ClerkProvider>
+		<ClerkProvider
+			appearance={{
+				baseTheme: theme === 'dark' ? dark : '',
+				elements: {
+					primaryBackground: 'bg-white dark:bg-blue-900',
+					primaryForeground: 'text-black dark:text-white',
+					primaryAccent: 'text-black dark:text-white',
+					primaryActionBackground: 'bg-blue-500 dark:bg-blue-500',
+					organizationSwitcherPopoverCard: 'bg-white/10 dark:bg-stone-950/10 backdrop-blur border',
+					userButtonPopoverCard: 'bg-white/10 dark:bg-stone-950/10 backdrop-blur border',
+				},
+			}}
+		>
 			<Navbar>
 				{isPublicPage ? (
 					<>{children}</>
